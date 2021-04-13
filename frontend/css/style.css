@@ -125,6 +125,15 @@ body {
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important; }
 
+
+/* search bar style */
+
+
+
+/* search bar style */
+
+
+
 hr {
   -webkit-box-sizing: content-box;
   box-sizing: content-box;

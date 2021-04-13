@@ -8,6 +8,16 @@
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
+    <style>
+        .photos-button{
+            background-color: green;
+            border: 0;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 7px;
+        }
+    </style>
 </head>
 
 <body>
@@ -192,7 +202,50 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3 class="box-title">Blank Page</h3>
+                            <div class="col-lg-8 col-xlg-9 col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form class="form-horizontal form-material">
+                                            <div class="form-group mb-4">
+                                                <div class="col-md-12 border-bottom p-0">
+                                                    <input type="text" placeholder="Book Name" class="form-control p-0 border-0"> </div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <div class="col-md-12 border-bottom p-0">
+                                                    <input type="text" placeholder="Author" class="form-control p-0 border-0">
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label class="col-sm-12" style="font-weight: bold;">Select Genre</label>
+                                                <div class="col-md-12 border-bottom p-0">
+                                                    <div class="col-sm-12 border-bottom">
+                                                        <select class="form-select shadow-none p-0 border-0 form-control-line">
+                                                            <option>Romance</option>
+                                                            <option>Drama</option>
+                                                            <option>Thriller</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <div class="col-md-12 border-bottom p-0">
+                                                    <input type="text" placeholder="Short Description" class="form-control p-0 border-0">
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <div class="col-md-12 p-0">
+                                                    <button class="photos-button">Add Photos</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <div class="col-sm-12">
+                                                    <button class="btn btn-success" style="font-weight: bold;">Update Profile</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

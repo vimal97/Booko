@@ -1,0 +1,53 @@
+<html>
+<head>
+	<link rel="stylesheet" href="signin.css">
+</head>
+<body>
+	<div class="container" id="container">
+		<!-- <div class="form-container sign-up-container">
+			<form action="#">
+				<h1>Create Account</h1>
+				
+				<span>or use your email for registration</span>
+				<input type="text" placeholder="Name" />
+				<input type="email" placeholder="Email" />
+							<input type="username" placeholder="Username" />
+				<input type="password" placeholder="Password" />
+				<button>Sign Up</button>
+			</form>
+		</div> -->
+		<div class="form-container sign-in-container">
+			<form>
+				<h1>Sign Up</h1>
+				
+				
+				<input id="emailId" type="email" placeholder="Email" />
+				<input id="username" type="username" placeholder="Username" />
+				<input id="password" type="password" placeholder="Password" />
+				
+				<button onclick="signup()">Sign up</button>
+			</form>
+		</div>
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-left">
+					
+					<button class="ghost" id="signIn">Sign In</button>
+				</div>
+				<div class="overlay-panel overlay-right">
+					<h1>Hello!</h1>
+					<p>If you already have an account Log in</p>
+					<a href="./login.html"><button class="ghost" id="login">log in</button</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		signup = () => {
+			localStorage.emailId = document.getElementById("emailId").value;
+			localStorage.password = document.getElementById("password").value;
+			window.location.href = "../dashboard.html";
+		}
+	</script>
+</body>
+</html>
