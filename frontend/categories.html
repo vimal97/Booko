@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
+ <link href="cat.css" rel="stylesheet">
 </head>
 
 <body>
@@ -38,7 +39,7 @@
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
-                            <!-- <img src="plugins/images/logo-icon.png" alt="homepage" /> -->
+                            <img src="img/logo.png" style="widows: 40px;height: 30px;" alt="homepage" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
@@ -76,7 +77,7 @@
                         <li>
                             <a class="profile-pic" href="#">
                                 <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
-                                    class="img-circle"><span class="text-white font-medium">Steave</span></a>
+                                    class="img-circle"><span id="profile-name" class="text-white font-medium">Steave</span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile avatar -->
@@ -190,11 +191,67 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="white-box">
-                            <h3 class="box-title">Blank Page</h3>
+                    <div class="white-box row">
+                        <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/ad.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">ADVENTURE</p>
+		                <button class="btn btn1"></button>
+		                </div>
+                        <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/cl.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">CLASSICS </p>
+		                <button class="btn btn2"></button>
+		                </div>
+                        <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/co.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">COMICS</p>
+		                <button class="btn btn3"></button>
                         </div>
-                    </div>
+                        <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/de.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">DETECTIVE</p>
+		                <button class="btn btn4"></button>
+		                </div>
+                        <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/fa.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">FANTASY</p>
+		                <button class="btn btn3"></button>
+		                </div>
+		                <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/ho.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">HORROR</p>
+		                <button class="btn btn3"><br></button>
+		                </div>
+                        <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/ro.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">ROMANCE</p>
+		                <button class="btn btn3"></button>
+		                </div>
+                        <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/sci.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">SCI-FI</p>
+		                <button class="btn btn3"></button>
+		                </div>
+		                <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/th.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">THRILLERS</p>
+		                <button class="btn btn3"></button>
+		                </div>
+                        <div class="div1 col-md-3" style="text-align: center;">
+                        <img src="img/au.jpg" style="width: 25%;" />
+                        <p style="margin-top: 10px;">AUTOBIOGRAPHIES</p>
+		                <button class="btn btn3"></button>
+		                </div>
+		                <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/hi.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">HISTORY</p>
+		                <button class="btn btn3"></button>
+		                </div>
+		                <div class="div1 col-md-3" style="text-align: center;">
+		                <img src="img/se.jpg" style="width: 25%;" />
+		                <p style="margin-top: 10px;">SELF-HELP</p>
+		                <button class="btn btn3"></button>
+		                </div>
                 </div>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -213,9 +270,7 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center"> 2021 © Ample Admin brought to you by <a
-                    href="https://www.wrappixel.com/">wrappixel.com</a>
-            </footer>
+            
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -240,6 +295,9 @@
     <script src="js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="js/custom.js"></script>
+    <script>
+        document.getElementById("profile-name").innerHTML = localStorage.username;
+    </script>
 </body>
 
 </html>

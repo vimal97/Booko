@@ -17,7 +17,7 @@
 			</form>
 		</div> -->
 		<div class="form-container sign-in-container">
-			<form>
+			<form onsubmit="event.preventDefault();">
 				<h1>Sign Up</h1>
 				
 				
@@ -45,6 +45,7 @@
 	<script>
 		signup = () => {
 			localStorage.emailId = document.getElementById("emailId").value;
+			localStorage.username = document.getElementById("username").value;
 			localStorage.password = document.getElementById("password").value;
 			window.location.href = "../dashboard.html";
 		}

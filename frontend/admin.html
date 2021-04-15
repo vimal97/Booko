@@ -8,6 +8,16 @@
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
+    <style>
+        .block-button{
+            background-color: green;
+            color: white;
+            font-weight: bold;
+            border: 0;
+            width: 150px;
+            height: 40px;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,7 +44,7 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="dashboard.html">
+                    <a class="navbar-brand" href="admin.html">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
@@ -76,7 +86,7 @@
                         <li>
                             <a class="profile-pic" href="#">
                                 <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
-                                    class="img-circle"><span id="profile-name" class="text-white font-medium">Steave</span></a>
+                                    class="img-circle"><span id="profile-name" class="text-white font-medium">Admin</span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile avatar -->
@@ -99,50 +109,10 @@
                     <ul id="sidebarnav">
                         <!-- Home -->
                         <li class="sidebar-item pt-2">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard.html"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#"
                                 aria-expanded="false">
                                 <i class="far fa-clock" aria-hidden="true"></i>
-                                <span class="hide-menu">Home</span>
-                            </a>
-                        </li>
-                        <!-- User Profile-->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="profile.html"
-                                aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
-                                <span class="hide-menu">My Profile</span>
-                            </a>
-                        </li>
-                        <!-- Posts books -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="sell-books.html"
-                                aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                                <span class="hide-menu">Sell Books</span>
-                            </a>
-                        </li>
-                        <!-- View your books -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="my-books.html"
-                                aria-expanded="false">
-                                <i class="fa fa-table" aria-hidden="true"></i>
-                                <span class="hide-menu">My Books</span>
-                            </a>
-                        </li>
-                        <!-- Categories -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="categories.html"
-                                aria-expanded="false">
-                                <i class="fa fa-font" aria-hidden="true"></i>
-                                <span class="hide-menu">Categories</span>
-                            </a>
-                        </li>
-                        <!-- Notifications -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="notifications.html"
-                                aria-expanded="false">
-                                <i class="fa fa-globe" aria-hidden="true"></i>
-                                <span class="hide-menu">Notifications</span>
+                                <span class="hide-menu">View User's</span>
                             </a>
                         </li>
                         <!-- Logout -->
@@ -185,14 +155,70 @@
             <!-- ============================================================== -->
             <!-- Container fluid  -->
             <!-- ============================================================== -->
-            <div class="container-fluid">
+            <div class="container-fluid">   
                 <!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3 class="box-title">No new notifications.</h3>
+                            <div class="table-responsive">
+                                <table class="table text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">#</th>
+                                            <th class="border-top-0">First Name</th>
+                                            <th class="border-top-0">Last Name</th>
+                                            <th class="border-top-0">Username</th>
+                                            <th class="border-top-0">Role</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Deshmukh</td>
+                                            <td>Prohaska</td>
+                                            <td>@Genelia</td>
+                                            <td><button class="block-button">Block</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Deshmukh</td>
+                                            <td>Gaylord</td>
+                                            <td>@Ritesh</td>
+                                            <td><button class="block-button">Block</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Sanghani</td>
+                                            <td>Gusikowski</td>
+                                            <td>@Govinda</td>
+                                            <td><button class="block-button">Block</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>Roshan</td>
+                                            <td>Rogahn</td>
+                                            <td>@Hritik</td>
+                                            <td><button class="block-button">Block</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>Joshi</td>
+                                            <td>Hickle</td>
+                                            <td>@Maruti</td>
+                                            <td><button class="block-button">Block</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>Nigam</td>
+                                            <td>Eichmann</td>
+                                            <td>@Sonu</td>
+                                            <td><button class="block-button">Block</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -238,9 +264,6 @@
     <script src="js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="js/custom.js"></script>
-    <script>
-        document.getElementById("profile-name").innerHTML = localStorage.username;
-    </script>
 </body>
 
 </html>

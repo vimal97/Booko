@@ -59,7 +59,7 @@
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
-                            <!-- <img src="plugins/images/logo-text.png" alt="homepage" /> -->
+                            <img src="img/logo.png" style="widows: 40px;height: 30px;" alt="homepage" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
@@ -92,7 +92,7 @@
                         <li>
                             <a class="profile-pic" href="#">
                                 <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
-                                    class="img-circle"><span class="text-white font-medium">Steave</span></a>
+                                    class="img-circle"><span id="profile-name" class="text-white font-medium">Steave</span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile avatar -->
@@ -232,21 +232,21 @@
                                             <td>Book 1</td>
                                             <td>Genre 1</td>
                                             <td>Author 1</td>
-                                            <td><div onclick="todo()" class="purchase-button">Buy</div></td>
+                                            <td><div onclick="todo()" class="purchase-button">Request</div></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
                                             <td>Book 2</td>
                                             <td>Genre 2</td>
                                             <td>Author 2</td>
-                                            <td><div onclick="todo()" class="purchase-button">Buy</div></td>
+                                            <td><div onclick="todo()" class="purchase-button">Request</div></td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
                                             <td>Book 3</td>
                                             <td>Genre 1</td>
                                             <td>Author 3</td>
-                                            <td><div onclick="todo()" class="purchase-button">Buy</div></td>
+                                            <td><div onclick="todo()" class="purchase-button">Request</div></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -271,9 +271,7 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center"> 2021 © Ample Admin brought to you by <a
-                    href="https://www.wrappixel.com/">wrappixel.com</a>
-            </footer>
+            
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -308,6 +306,7 @@
         todo = () => {
             alert("Work under progress !!")
         }
+        document.getElementById("profile-name").innerHTML = localStorage.username;
     </script>
 </body>
 

@@ -48,7 +48,7 @@
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
-                            <!-- <img src="plugins/images/logo-icon.png" alt="homepage" /> -->
+                            <img src="img/logo.png" style="widows: 40px;height: 30px;" alt="homepage" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
@@ -86,7 +86,7 @@
                         <li>
                             <a class="profile-pic" href="#">
                                 <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
-                                    class="img-circle"><span class="text-white font-medium">Steave</span></a>
+                                    class="img-circle"><span id="profile-name" class="text-white font-medium"></span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile avatar -->
@@ -220,9 +220,18 @@
                                                 <div class="col-md-12 border-bottom p-0">
                                                     <div class="col-sm-12 border-bottom">
                                                         <select class="form-select shadow-none p-0 border-0 form-control-line">
-                                                            <option>Romance</option>
-                                                            <option>Drama</option>
-                                                            <option>Thriller</option>
+                                                            <option>ADVENTURE</option>
+                                                            <option>CLASSICS</option>
+                                                            <option>COMICS</option>
+                                                            <option>DETECTIVE</option>
+                                                            <option>FANTASY</option>
+                                                            <option>HORROR</option>
+                                                            <option>ROMANCE</option>
+                                                            <option>SCI-FI</option>
+                                                            <option>THRILLERS</option>
+                                                            <option>AUTOBIOGRAPHIES</option>
+                                                            <option>HISTORY</option>
+                                                            <option>SELF-HELP</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -266,9 +275,7 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center"> 2021 © Ample Admin brought to you by <a
-                    href="https://www.wrappixel.com/">wrappixel.com</a>
-            </footer>
+            
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -293,6 +300,9 @@
     <script src="js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="js/custom.js"></script>
+    <script>
+        document.getElementById("profile-name").innerHTML = localStorage.username;
+    </script>
 </body>
 
 </html>
