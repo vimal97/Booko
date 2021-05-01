@@ -6,17 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords"
-        content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template">
-    <meta name="description"
-        content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Ample Admin Lite Template by WrapPixel</title>
+    <title>Resource not found</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon.png') }}"> -->
     <!-- Custom CSS -->
-   <link href="css/style.min.css" rel="stylesheet">
+   <link href="{{ url_for('static', filename='style.min.css') }}" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -47,7 +43,7 @@
                 <h1 class="error-title text-danger">404</h1>
                 <h3 class="text-uppercase error-subtitle">PAGE NOT FOUND !</h3>
                 <p class="text-muted mt-4 mb-4">YOU SEEM TO BE TRYING TO FIND HIS WAY HOME</p>
-                <a href="dashboard.html" class="btn btn-danger btn-rounded waves-effect waves-light mb-5 text-white">Back to home</a>
+                <a href="/home" class="btn btn-danger btn-rounded waves-effect waves-light mb-5 text-white">Back to home</a>
             </div>
         </div>
         <!-- ============================================================== -->
@@ -69,9 +65,9 @@
     <!-- ============================================================== -->
     <!-- All Required js -->
     <!-- ============================================================== -->
-    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='plugins/jquery.min.js') }}"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='plugins/bootstrap.bundle.min.js') }}"></script>
     <!-- ============================================================== -->
     <!-- This page plugin js -->
     <!-- ============================================================== -->
