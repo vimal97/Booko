@@ -148,7 +148,7 @@
                         <!-- Logout -->
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" 
-                                onclick='alert("Logging out...")'
+                                href = "/login"
                                 aria-expanded="false">
                                 <i class="fa fa-columns" aria-hidden="true"></i>
                                 <span class="hide-menu">Logout</span>
@@ -311,14 +311,9 @@
     <!--Custom JavaScript -->
     <script src="js/custom.js"></script>
     <script>
-        document.getElementById("profile-name").innerHTML = localStorage.username;
-        document.getElementById("username").innerHTML = localStorage.username;
-        if(localStorage.emailid != undefined){
-            document.getElementById("email-id").innerHTML = localStorage.emailid;
-        }
-        else{
-            document.getElementById("email-id").innerHTML = "xxx@yyy.zzz";
-        }
+        document.getElementById("profile-name").innerHTML = JSON.parse(localStorage.userData).userName;
+        document.getElementById("username").innerHTML = JSON.parse(localStorage.userData).userName;
+        document.getElementById("email-id").innerHTML = JSON.parse(localStorage.userData).emailId;
     </script>
 </body>
 

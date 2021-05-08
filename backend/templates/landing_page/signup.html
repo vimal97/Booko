@@ -1,5 +1,6 @@
 <html>
 <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='landing_page/signin.css') }}">
 </head>
 <body style="background: url({{ url_for('static', filename='landing_page/l.jpg') }})no-repeat;">
@@ -32,10 +33,32 @@
 	</div>
 	<script>
 		signup = () => {
-			localStorage.emailId = document.getElementById("emailId").value;
-			localStorage.username = document.getElementById("username").value;
-			localStorage.password = document.getElementById("password").value;
-			window.location.href = "/dashboard";
+			signUpData = {
+				'userName': document.getElementById("username").value,
+				'firstName': "",
+				'lastName': "",
+				'phoneNo': "",
+				'emailId': document.getElementById("emailId").value,
+				'password': document.getElementById("password").value,
+				'interests': ""
+			}
+			var settings = {
+				"async": true,
+				"crossDomain": true,
+				"url": "http://127.0.0.1:5000/signup",
+				"method": "POST",
+				"data": JSON.stringify(signUpData)
+			}
+
+			$.ajax(settings).done(function (response) {
+				if(response.success == true){
+					localStorage.userData = response.userData;
+					localStorage.login = true;
+					window.location.href = "/dashboard";
+				}else
+					alert(response.message)
+			});
+			
 		}
 	</script>
 </body>

@@ -1,5 +1,6 @@
 <html>
 <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='landing_page/log.css') }}">
 </head>
 <body style="background: url({{ url_for('static', filename='landing_page/l.jpg') }})no-repeat;">
@@ -29,12 +30,25 @@
 	</div>
 	<script>
 		login = () => {
-			if(document.getElementById("emailId").value == localStorage.emailId && document.getElementById("password").value == localStorage.password){
-				window.location.href = "/dashboard";
+			loginData = {
+				'emailId': document.getElementById("emailId").value,
+				'password': document.getElementById("password").value
 			}
-			else{
-				alert("User not found!!")
+			var settings = {
+				"async": true,
+				"crossDomain": true,
+				"url": "http://127.0.0.1:5000/login",
+				"method": "POST",
+				"data": JSON.stringify(loginData)
 			}
+
+			$.ajax(settings).done(function (response) {
+				if(response.success == true){
+					localStorage.userData = JSON.parse(response.userData);
+					window.location.href = "/dashboard";
+				}else
+					alert(response.message)
+			});
 		}
 	</script>
 </body>
