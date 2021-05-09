@@ -3,11 +3,10 @@
 
 <head>
     <title>BOOKO</title>
+	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
-    <link href="css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
     <style>
         .photos-button{
             background-color: green;
@@ -44,11 +43,11 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="dashboard.html">
+                    <a class="navbar-brand" href="/dashboard">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
-                            <img src="img/logo.png" style="widows: 40px;height: 30px;" alt="homepage" />
+                            <img src="{{ url_for('static', filename='img/logo.png') }}" style="widows: 40px;height: 30px;" alt="homepage" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
@@ -85,7 +84,7 @@
                         <!-- ============================================================== -->
                         <li>
                             <a class="profile-pic" href="#">
-                                <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
+                                <img src="{{ url_for('static', filename='plugins/images/users/varun.jpg') }}" alt="user-img" width="36"
                                     class="img-circle"><span id="profile-name" class="text-white font-medium"></span></a>
                         </li>
                         <!-- ============================================================== -->
@@ -109,7 +108,7 @@
                     <ul id="sidebarnav">
                         <!-- Home -->
                         <li class="sidebar-item pt-2">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard.html"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard"
                                 aria-expanded="false">
                                 <i class="far fa-clock" aria-hidden="true"></i>
                                 <span class="hide-menu">Home</span>
@@ -117,7 +116,7 @@
                         </li>
                         <!-- User Profile-->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="profile.html"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/profile"
                                 aria-expanded="false">
                                 <i class="far fa-clock" aria-hidden="true"></i>
                                 <span class="hide-menu">My Profile</span>
@@ -125,7 +124,7 @@
                         </li>
                         <!-- Posts books -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="sell-books.html"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/sell-books"
                                 aria-expanded="false">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="hide-menu">Sell Books</span>
@@ -133,7 +132,7 @@
                         </li>
                         <!-- View your books -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="my-books.html"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/my-books"
                                 aria-expanded="false">
                                 <i class="fa fa-table" aria-hidden="true"></i>
                                 <span class="hide-menu">My Books</span>
@@ -141,7 +140,7 @@
                         </li>
                         <!-- Categories -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="categories.html"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/categories"
                                 aria-expanded="false">
                                 <i class="fa fa-font" aria-hidden="true"></i>
                                 <span class="hide-menu">Categories</span>
@@ -149,7 +148,7 @@
                         </li>
                         <!-- Notifications -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="notifications.html"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications"
                                 aria-expanded="false">
                                 <i class="fa fa-globe" aria-hidden="true"></i>
                                 <span class="hide-menu">Notifications</span>
@@ -290,18 +289,25 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/app-style-switcher.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app-style-switcher.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
     <!--Wave Effects -->
-    <script src="js/waves.js"></script>
+    <script src="{{ url_for('static', filename='js/waves.js') }}"></script>
     <!--Menu sidebar -->
-    <script src="js/sidebarmenu.js"></script>
+    <script src="{{ url_for('static', filename='js/sidebarmenu.js') }}"></script>
     <!--Custom JavaScript -->
-    <script src="js/custom.js"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+    <!--This page JavaScript -->
+    <!--chartis chart-->
+    <script src="{{ url_for('static', filename='plugins/bower_components/chartist/dist/chartist.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
     <script>
-        document.getElementById("profile-name").innerHTML = localStorage.username;
+        userData = JSON.parse(localStorage.userData)
+        document.getElementById("profile-name").innerHTML = userData.userName;
     </script>
 </body>
 

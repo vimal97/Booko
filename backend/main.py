@@ -9,7 +9,8 @@ conn = sqlite3.connect('booko.db')
 print("Opened database successfully")
 cursor = conn.cursor()
 cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-if(("users",) in cursor.fetchall()):
+tables = cursor.fetchall()
+if(('users',) in tables):
     print("Users table already present")
 else:
     try:
@@ -18,7 +19,7 @@ else:
         print("Created table for users")
     except Exception as e:
         print("Failed to create tables due to : {}".format(e))
-if(("books",) in cursor.fetchall()):
+if(('books',) in tables):
     print("Books table already present")
 else:
     try:

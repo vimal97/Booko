@@ -3,9 +3,8 @@
 
 <head>
     <title>BOOKO</title>
+	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='plugins/images/favicon.png') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -303,9 +302,8 @@
     <script src="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
     <script>
-        document.getElementById("profile-name").innerHTML = JSON.parse(localStorage.userData).userName;
-        consold.log("Vimal")
-
+        userData = JSON.parse(localStorage.userData)
+        document.getElementById("profile-name").innerHTML = userData.userName;
         todo = () => {
             alert("Work under progress !!")
         }

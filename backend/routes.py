@@ -50,7 +50,7 @@ def login():
                 for i in rows:
                     if(i[4] == loginData['emailId'] and i[5] == loginData['password']):
                         print(" -> User login successful\n")
-                        return jsonify(success=True,message="User login successful",userData="{"+"userName:'{}',firstName:'{}',lastName:'{}',phoneNo:'{}',emailId:'{}',password:'{}',interests:'{}'".format(i[0],i[1],i[2],i[3],i[4],i[5],i[6])+"}")
+                        return jsonify(success=True,message="User login successful",userName=i[0],firstName=i[1],lastName=i[2],phoneNo=i[3],emailId=i[4],password=i[5],interests=i[6])
                 print(" -> User not found\n")
                 return jsonify(success=False,message="User not found")
         except Exception as e:
@@ -62,6 +62,36 @@ def login():
 def dashboard():
     print("\n#REQUEST FOR /dashboard\n")
     return render_template("dashboard.html")
+
+@app.route('/profile')
+@cross_origin()
+def profile():
+    print("\n#REQUEST FOR /profile\n")
+    return render_template("profile.html")
+
+@app.route('/sell-books')
+@cross_origin()
+def sellBooks():
+    print("\n#REQUEST FOR /sell-books\n")
+    return render_template("sell-books.html")
+
+@app.route('/my-books')
+@cross_origin()
+def myBooks():
+    print("\n#REQUEST FOR /my-books\n")
+    return render_template("my-books.html")
+
+@app.route('/categories')
+@cross_origin()
+def categories():
+    print("\n#REQUEST FOR /categories\n")
+    return render_template("categories.html")
+
+@app.route('/notifications')
+@cross_origin()
+def notifications():
+    print("\n#REQUEST FOR /notifications\n")
+    return render_template("notifications.html")
 
 @app.errorhandler(404)
 def not_found(e):

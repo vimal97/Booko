@@ -1,5 +1,7 @@
 <html>
 <head>
+	<title>BOOKO</title>
+	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='landing_page/log.css') }}">
 </head>
@@ -44,7 +46,16 @@
 
 			$.ajax(settings).done(function (response) {
 				if(response.success == true){
-					localStorage.userData = JSON.parse(response.userData);
+					console.log(response)
+					userData = {}
+					userData.userName = response.userName;
+					userData.firstName = response.firstName
+					userData.lastName = response.lastName;
+					userData.phoneNo = response.phoneNo;
+					userData.emailId = response.emailId;
+					userData.password = response.password;
+					userData.interests = response.interests;
+					localStorage.userData = JSON.stringify(userData)
 					window.location.href = "/dashboard";
 				}else
 					alert(response.message)
