@@ -14,7 +14,7 @@ if(('users',) in tables):
     print("Users table already present")
 else:
     try:
-        conn.execute('CREATE TABLE users (username TEXT, firstname TEXT, lastname TEXT, phoneno TEXT, emailid TEXT, password TEXT, interests TEXT)')
+        conn.execute('CREATE TABLE users (username TEXT, firstname TEXT, lastname TEXT, phoneno TEXT, emailid TEXT, password TEXT, country TEXT, interests TEXT)')
         conn.commit()
         print("Created table for users")
     except Exception as e:
@@ -23,7 +23,7 @@ if(('books',) in tables):
     print("Books table already present")
 else:
     try:
-        conn.execute('CREATE TABLE books (username TEXT, firstname TEXT, lastname TEXT, phoneno TEXT, emailid TEXT, password TEXT, interests TEXT)')
+        conn.execute('CREATE TABLE books (name TEXT, author TEXT, genre TEXT, description TEXT, imagepath TEXT, owner TEXT)')
         conn.commit()
         print("Created table for books")
     except Exception as e:

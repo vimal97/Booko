@@ -47,16 +47,20 @@
 			$.ajax(settings).done(function (response) {
 				if(response.success == true){
 					console.log(response)
-					userData = {}
-					userData.userName = response.userName;
-					userData.firstName = response.firstName
-					userData.lastName = response.lastName;
-					userData.phoneNo = response.phoneNo;
-					userData.emailId = response.emailId;
-					userData.password = response.password;
-					userData.interests = response.interests;
-					localStorage.userData = JSON.stringify(userData)
-					window.location.href = "/dashboard";
+					if(response.admin == true)
+						window.location.href = "/admin";
+					else{
+						userData = {}
+						userData.userName = response.userName;
+						userData.firstName = response.firstName
+						userData.lastName = response.lastName;
+						userData.phoneNo = response.phoneNo;
+						userData.emailId = response.emailId;
+						userData.country = response.country;
+						userData.interests = response.interests;
+						localStorage.userData = JSON.stringify(userData)
+						window.location.href = "/dashboard";
+					}
 				}else
 					alert(response.message)
 			});

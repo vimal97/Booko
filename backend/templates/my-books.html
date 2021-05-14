@@ -5,8 +5,12 @@
     <title>BOOKO</title>
 	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" /> 
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -101,7 +105,7 @@
                         <li class="sidebar-item pt-2">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <i class="fa fa-home" aria-hidden="true"></i>
                                 <span class="hide-menu">Home</span>
                             </a>
                         </li>
@@ -109,7 +113,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/profile"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="hide-menu">My Profile</span>
                             </a>
                         </li>
@@ -117,7 +121,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/sell-books"
                                 aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <i class="fa fa-plus-square-o" aria-hidden="true"></i>
                                 <span class="hide-menu">Sell Books</span>
                             </a>
                         </li>
@@ -125,7 +129,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/my-books"
                                 aria-expanded="false">
-                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <i class="fa fa-book" aria-hidden="true"></i>
                                 <span class="hide-menu">My Books</span>
                             </a>
                         </li>
@@ -133,7 +137,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/categories"
                                 aria-expanded="false">
-                                <i class="fa fa-font" aria-hidden="true"></i>
+                                <i class="fa fa-sitemap" aria-hidden="true"></i>
                                 <span class="hide-menu">Categories</span>
                             </a>
                         </li>
@@ -141,7 +145,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications"
                                 aria-expanded="false">
-                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                 <span class="hide-menu">Notifications</span>
                             </a>
                         </li>
@@ -150,7 +154,7 @@
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href = "/login"
                                 aria-expanded="false">
-                                <i class="fa fa-columns" aria-hidden="true"></i>
+                                <i class="fa fa-power-off" aria-hidden="true"></i>
                                 <span class="hide-menu">Logout</span>
                             </a>
                         </li>
@@ -192,59 +196,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3 class="box-title">My Collections</h3>
+                            <h3 class="box-title" style="margin-bottom: 5%;" >My Collections</h3>
                             <div class="table-responsive">
-                                <table class="table text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0">#</th>
-                                            <th class="border-top-0">Book</th>
-                                            <th class="border-top-0">Author</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Book-1</td>
-                                            <td>Author-1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Book-2</td>
-                                            <td>Author-2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Book-3</td>
-                                            <td>Author-3</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <table id="owned" class="display" width="100%"></table>
                             </div>
 
-                            <h3 class="box-title">Requested</h3>
+                            <h3 class="box-title" style="margin-top: 2%;margin-bottom: 5%;"  >Requested</h3>
                             <div class="table-responsive">
-                                <table class="table text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0">#</th>
-                                            <th class="border-top-0">Book</th>
-                                            <th class="border-top-0">Author</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Book-4</td>
-                                            <td>Author-4</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Book-5</td>
-                                            <td>Author-5</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <table id="requested" class="display" width="100%"></table>
                             </div>
                         </div>
                         </div>
@@ -299,8 +258,76 @@
     <script src="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
     <script>
+
         userData = JSON.parse(localStorage.userData)
         document.getElementById("profile-name").innerHTML = userData.userName;
+        var request = {
+            type: "owned",
+            email: userData.emailId
+        }
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://127.0.0.1:5000/all-books",
+            "method": "POST",
+            "data": JSON.stringify(request)
+        }
+
+        $.ajax(settings).done(function (response) {
+            if(response.success == true){
+                console.log(response);
+                $.noConflict();
+                $('#owned').DataTable( {
+                        data: response.books,
+                        iDisplayLength: 3,
+                        columns: [
+                            { title: "#" },
+                            { title: "Book" },
+                            { title: "Genre" },
+                            { title: "Author" }
+                        ],
+                        fnInitComplete: function (oSettings, json) {
+                            document.getElementById('owned_filter').childNodes[0].childNodes[1].placeholder = "Search for Books.."
+                        }
+                    } );
+            }else{
+                console.log(response);
+            }
+        });
+
+        // var request = {
+        //     type: "requested",
+        //     email: userData.emailId
+        // }
+        // var settings = {
+        //     "async": true,
+        //     "crossDomain": true,
+        //     "url": "http://127.0.0.1:5000/all-books",
+        //     "method": "POST",
+        //     "data": JSON.stringify(request)
+        // }
+
+        // $.ajax(settings).done(function (response) {
+        //     if(response.success == true){
+        //         console.log(response);
+        //         $.noConflict();
+        //         $('#requested').DataTable( {
+        //                 data: response.books,
+        //                 iDisplayLength: 3,
+        //                 columns: [
+        //                     { title: "#" },
+        //                     { title: "Book" },
+        //                     { title: "Genre" },
+        //                     { title: "Author" }
+        //                 ],
+        //                 fnInitComplete: function (oSettings, json) {
+        //                     document.getElementById('requested_filter').childNodes[0].childNodes[1].placeholder = "Search for Books.."
+        //                 }
+        //             } );
+        //     }else{
+        //         console.log(response);
+        //     }
+        // });
     </script>
 </body>
 

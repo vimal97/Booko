@@ -5,8 +5,79 @@
     <title>BOOKO</title>
 	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" /> 
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        /* The Modal (background) */
+        .modal-booko {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content-booko {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 80%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+        from {top:-300px; opacity:0} 
+        to {top:0; opacity:1}
+        }
+
+        @keyframes animatetop {
+        from {top:-300px; opacity:0}
+        to {top:0; opacity:1}
+        }
+
+        /* The Close Button */
+        .close-booko {
+        color: #615a5acc;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+
+        .close-booko:hover,
+        .close-booko:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+        }
+
+        .modal-header-booko {
+        padding: 20px 20px;
+        background-color: #dfecdf;
+        color: #191a1b;
+        }
+
+        .modal-body-booko {padding: 2px 16px;}
+    </style>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  <!-- <link href="cat.css" rel="stylesheet"> -->
 </head>
 
@@ -101,7 +172,7 @@
                         <li class="sidebar-item pt-2">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <i class="fa fa-home" aria-hidden="true"></i>
                                 <span class="hide-menu">Home</span>
                             </a>
                         </li>
@@ -109,7 +180,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/profile"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="hide-menu">My Profile</span>
                             </a>
                         </li>
@@ -117,7 +188,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/sell-books"
                                 aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <i class="fa fa-plus-square-o" aria-hidden="true"></i>
                                 <span class="hide-menu">Sell Books</span>
                             </a>
                         </li>
@@ -125,7 +196,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/my-books"
                                 aria-expanded="false">
-                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <i class="fa fa-book" aria-hidden="true"></i>
                                 <span class="hide-menu">My Books</span>
                             </a>
                         </li>
@@ -133,7 +204,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/categories"
                                 aria-expanded="false">
-                                <i class="fa fa-font" aria-hidden="true"></i>
+                                <i class="fa fa-sitemap" aria-hidden="true"></i>
                                 <span class="hide-menu">Categories</span>
                             </a>
                         </li>
@@ -141,7 +212,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications"
                                 aria-expanded="false">
-                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                 <span class="hide-menu">Notifications</span>
                             </a>
                         </li>
@@ -150,7 +221,7 @@
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href = "/login"
                                 aria-expanded="false">
-                                <i class="fa fa-columns" aria-hidden="true"></i>
+                                <i class="fa fa-power-off" aria-hidden="true"></i>
                                 <span class="hide-menu">Logout</span>
                             </a>
                         </li>
@@ -191,66 +262,70 @@
                 <!-- ============================================================== -->
                 <div class="row">
                     <div class="white-box row">
-                        <div class="div1 col-md-3" style="text-align: center;">
+                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Adventure')">
 		                <img src="{{ url_for('static', filename='img/adventure.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">ADVENTURE</p>
-		                <button class="btn btn1"></button>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;">
+                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Classics')">
 		                <img src="{{ url_for('static', filename='img/cl.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">CLASSICS </p>
-		                <button class="btn btn2"></button>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;">
+                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Comics')">
 		                <img src="{{ url_for('static', filename='img/co.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">COMICS</p>
-		                <button class="btn btn3"></button>
                         </div>
-                        <div class="div1 col-md-3" style="text-align: center;">
+                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Detective')">
 		                <img src="{{ url_for('static', filename='img/de.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">DETECTIVE</p>
-		                <button class="btn btn4"></button>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;">
+                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Fantasy')">
 		                <img src="{{ url_for('static', filename='img/fa.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">FANTASY</p>
-		                <button class="btn btn3"></button>
 		                </div>
-		                <div class="div1 col-md-3" style="text-align: center;">
+		                <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Horror')">
 		                <img src="{{ url_for('static', filename='img/ho.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">HORROR</p>
-		                <button class="btn btn3"><br></button>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;">
+                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Romance')">
 		                <img src="{{ url_for('static', filename='img/ro.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">ROMANCE</p>
-		                <button class="btn btn3"></button>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;">
+                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Sci-fi')">
 		                <img src="{{ url_for('static', filename='img/sci.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">SCI-FI</p>
-		                <button class="btn btn3"></button>
 		                </div>
-		                <div class="div1 col-md-3" style="text-align: center;">
+		                <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Thrillers')">
 		                <img src="{{ url_for('static', filename='img/th.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">THRILLERS</p>
-		                <button class="btn btn3"></button>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;">
+                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Autobiographies')">
                         <img src="{{ url_for('static', filename='img/au.jpg') }}" style="width: 25%;" />
                         <p style="margin-top: 10px;">AUTOBIOGRAPHIES</p>
-		                <button class="btn btn3"></button>
 		                </div>
-		                <div class="div1 col-md-3" style="text-align: center;">
+		                <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('History')">
 		                <img src="{{ url_for('static', filename='img/hi.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">HISTORY</p>
-		                <button class="btn btn3"></button>
 		                </div>
-		                <div class="div1 col-md-3" style="text-align: center;">
+		                <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Self-help')">
 		                <img src="{{ url_for('static', filename='img/se.jpg') }}" style="width: 25%;" />
 		                <p style="margin-top: 10px;">SELF-HELP</p>
-		                <button class="btn btn3"></button>
-		                </div>
+                        </div>
+
+                        <!-- The Modal -->
+                        <div style="z-index: 1000;" id="myModal" class="modal-booko">
+
+                            <!-- Modal content -->
+                            <div class="modal-content-booko">
+                            <div class="modal-header-booko">
+                                <span class="close-booko">&times;</span>
+                                <h2>Request your favourite book</h2>
+                            </div>
+                            <div id="content" class="modal-body-booko" style="padding:5%">
+                                
+                            </div>
+                            </div>
+                        
+                        </div>
                 </div>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
@@ -303,6 +378,60 @@
     <script>
         userData = JSON.parse(localStorage.userData)
         document.getElementById("profile-name").innerHTML = userData.userName;
+        var modal = document.getElementById("myModal");
+        $.noConflict();
+
+        open_category = (str) => {
+                var request = {
+                type: "categories",
+                genre: str,
+                email: userData.emailId
+            }
+            document.getElementById("content").innerHTML = "<table id='categories" + str + "' class='display' width='100%'></table>"
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/all-books",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response);
+                    $('#categories'+str).DataTable( {
+                            data: response.books,
+                            iDisplayLength: 3,
+                            columns: [
+                                { title: "#" },
+                                { title: "Book" },
+                                { title: "Genre" },
+                                { title: "Author" }
+                            ],
+                            fnInitComplete: function (oSettings, json) {
+                                document.getElementById('categories'+str+'_filter').childNodes[0].childNodes[1].placeholder = "Search for Books.."
+                            }
+                        } );
+                    modal.style.display = "block";
+                }else{
+                    console.log(response);
+                }
+            });
+        } 
+
+        var span = document.getElementsByClassName("close-booko")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        }
     </script>
 </body>
 

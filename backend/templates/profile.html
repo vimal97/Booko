@@ -5,8 +5,15 @@
     <title>BOOKO</title>
 	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        .select-options{
+            padding: 5px;
+        }
+    </style>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -100,7 +107,7 @@
                         <li class="sidebar-item pt-2">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <i class="fa fa-home" aria-hidden="true"></i>
                                 <span class="hide-menu">Home</span>
                             </a>
                         </li>
@@ -108,7 +115,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/profile"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="hide-menu">My Profile</span>
                             </a>
                         </li>
@@ -116,7 +123,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/sell-books"
                                 aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <i class="fa fa-plus-square-o" aria-hidden="true"></i>
                                 <span class="hide-menu">Sell Books</span>
                             </a>
                         </li>
@@ -124,7 +131,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/my-books"
                                 aria-expanded="false">
-                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <i class="fa fa-book" aria-hidden="true"></i>
                                 <span class="hide-menu">My Books</span>
                             </a>
                         </li>
@@ -132,7 +139,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/categories"
                                 aria-expanded="false">
-                                <i class="fa fa-font" aria-hidden="true"></i>
+                                <i class="fa fa-sitemap" aria-hidden="true"></i>
                                 <span class="hide-menu">Categories</span>
                             </a>
                         </li>
@@ -140,7 +147,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications"
                                 aria-expanded="false">
-                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                 <span class="hide-menu">Notifications</span>
                             </a>
                         </li>
@@ -149,7 +156,7 @@
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href = "/login"
                                 aria-expanded="false">
-                                <i class="fa fa-columns" aria-hidden="true"></i>
+                                <i class="fa fa-power-off" aria-hidden="true"></i>
                                 <span class="hide-menu">Logout</span>
                             </a>
                         </li>
@@ -204,14 +211,8 @@
                                 </div>
                             </div>
                             <div class="user-btm-box mt-5 d-md-flex">
-                                <div class="col-md-4 col-sm-4 text-center">
-                                    <h3>Ph : 258</h3>
-                                </div>
-                                <div class="col-md-4 col-sm-4 text-center">
-                                    <h3>125</h3>
-                                </div>
-                                <div class="col-md-4 col-sm-4 text-center">
-                                    <h3>556</h3>
+                                <div class="col-md-12 text-center">
+                                    <h3 id="phoneNo">Ph : XXX XXX XXX</h3>
                                 </div>
                             </div>
                         </div>
@@ -221,11 +222,17 @@
                     <div class="col-lg-8 col-xlg-9 col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="form-horizontal form-material">
+                                <form onsubmit="event.preventDefault();" class="form-horizontal form-material">
                                     <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0" style="font-weight: bold;">Full Name</label>
+                                        <label class="col-md-12 p-0" style="font-weight: bold;">First Name</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text"
+                                            <input type="text" id="firstname"
+                                                class="form-control p-0 border-0"> </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label class="col-md-12 p-0" style="font-weight: bold;">Last Name</label>
+                                        <div class="col-md-12 border-bottom p-0">
+                                            <input type="text" id="lastname"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
                                     <div class="form-group mb-4">
@@ -233,31 +240,50 @@
                                         <div class="col-md-12 border-bottom p-0">
                                             <input type="email"
                                                 class="form-control p-0 border-0" name="example-email"
-                                                id="example-email">
+                                                id="email">
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0" style="font-weight: bold;">Phone No</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text"
+                                            <input type="text" id="phoneno"
                                                 class="form-control p-0 border-0">
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <label class="col-sm-12" style="font-weight: bold;">Select Country</label>
                                         <div class="col-sm-12 border-bottom">
-                                            <select class="form-select shadow-none p-0 border-0 form-control-line">
-                                                <option>London</option>
-                                                <option>India</option>
-                                                <option>Usa</option>
-                                                <option>Canada</option>
-                                                <option>Thailand</option>
+                                            <select id="country" class="form-select shadow-none p-0 border-0 form-control-line">
+                                                <option class="select-options" value="London">London</option>
+                                                <option class="select-options" value="India">India</option>
+                                                <option class="select-options" value="Usa">Usa</option>
+                                                <option class="select-options" value="Canada">Canada</option>
+                                                <option class="select-options" value="Thailand">Thailand</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label class="col-sm-12" style="font-weight: bold;">Choose Intersts</label>
+                                        <div class="col-sm-12 border-bottom">
+                                            <select id="interests" class="form-select shadow-none p-0 border-0 form-control-line">
+                                                <option class='select-options' value="ADVENTURE">Adventure</option>
+                                                <option class='select-options'value="CLASSICS">Classics</option>
+                                                <option class='select-options' value="COMICS">Comics</option>
+                                                <option class='select-options' value="DETECTIVE">Detective</option>
+                                                <option class='select-options' value="FANTASY">Fantasy</option>
+                                                <option class='select-options' value="HORROR">Horror</option>
+                                                <option class='select-options' value="ROMANCE">Romance</option>
+                                                <option class='select-options' value="SCI-FI">Sci-fi</option>
+                                                <option class='select-options' value="THRILLERS">Thrillers</option>
+                                                <option class='select-options' value="AUTOBIOGRAPHIES">Autobiographies</option>
+                                                <option class='select-options' value="HISTORY">History</option>
+                                                <option class='select-options' value="SELF-HELP">Self-help</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <div class="col-sm-12">
-                                            <button class="btn btn-success" style="font-weight: bold;">Update Profile</button>
+                                            <button class="btn btn-success" onclick="update_profile()" style="font-weight: bold;">Update Profile</button>
                                         </div>
                                     </div>
                                 </form>
@@ -320,6 +346,77 @@
         document.getElementById("profile-name").innerHTML = userData.userName;
         document.getElementById("username").innerHTML = userData.userName;
         document.getElementById("email-id").innerHTML = userData.emailId;
+        
+        //fill bio
+        userData = JSON.parse(localStorage.userData);
+        if(userData.firstName!="")
+            $("#firstname").val(userData.firstName);
+        else
+            $("#firstname").attr("placeholder", "Enter your first name");
+
+        if(userData.lastName!="")
+            $("#lastname").val(userData.lastName);
+        else
+            $("#lastname").attr("placeholder", "Enter your last name");
+
+        if(userData.emailId!="")
+            $("#email").val(userData.emailId);
+
+        if(userData.phoneNo!=""){
+            $("#phoneno").val(userData.phoneNo);
+            $("#phoneNo").html("Ph : "+userData.phoneNo);
+        }
+        else
+            $("#phoneno").attr("placeholder", "Enter your phone number");
+        
+        if(userData.country!="")
+            $("#country").val(userData.country)
+
+        if(userData.interests!="")
+            $("#interests").val(userData.interests)
+        
+        // update profile
+        update_profile = () =>
+        { 
+            var profileData = {
+                userName: JSON.parse(localStorage.userData).userName,
+                firstName: $("#firstname").val(),
+                lastName: $("#lastname").val(),
+                emailId: $("#email").val(),
+                phoneNo: $("#phoneno").val(),
+                country: $("#country").val(),
+                interests: $("#interests").val()
+            }
+            $("#email-id").html(profileData.email);
+            $("#phoneNo").html("Ph : "+profileData.phoneNo);
+            userData = JSON.parse(localStorage.userData)
+            userData.userName = JSON.parse(localStorage.userData).userName;
+            userData.firstName = profileData.firstName;
+            userData.lastName = profileData.lastName;
+            userData.emailId = profileData.emailId;
+            userData.phoneNo = profileData.phoneNo;
+            userData.country = profileData.country;
+            userData.interests = profileData.interests;
+            localStorage.userData = JSON.stringify(userData);
+            
+            var settings = {
+				"async": true,
+				"crossDomain": true,
+				"url": "http://127.0.0.1:5000/profile",
+				"method": "POST",
+				"data": JSON.stringify(profileData)
+			}
+
+			$.ajax(settings).done(function (response) {
+				if(response.success == true){
+					console.log(response);
+                    swal("Done !", response.message, "success");
+				}else{
+                    console.log(response);
+					swal("Failed :(", response.message, "error");
+                }
+			});
+        }
     </script>
 </body>
 

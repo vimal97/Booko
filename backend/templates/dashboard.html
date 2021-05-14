@@ -5,6 +5,9 @@
     <title>BOOKO</title>
 	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />  
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -116,7 +119,7 @@
                         <li class="sidebar-item pt-2">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <i class="fa fa-home" aria-hidden="true"></i>
                                 <span class="hide-menu">Home</span>
                             </a>
                         </li>
@@ -124,7 +127,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/profile"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="hide-menu">My Profile</span>
                             </a>
                         </li>
@@ -132,7 +135,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/sell-books"
                                 aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <i class="fa fa-plus-square-o" aria-hidden="true"></i>
                                 <span class="hide-menu">Sell Books</span>
                             </a>
                         </li>
@@ -140,7 +143,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/my-books"
                                 aria-expanded="false">
-                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <i class="fa fa-book" aria-hidden="true"></i>
                                 <span class="hide-menu">My Books</span>
                             </a>
                         </li>
@@ -148,7 +151,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/categories"
                                 aria-expanded="false">
-                                <i class="fa fa-font" aria-hidden="true"></i>
+                                <i class="fa fa-sitemap" aria-hidden="true"></i>
                                 <span class="hide-menu">Categories</span>
                             </a>
                         </li>
@@ -156,7 +159,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications"
                                 aria-expanded="false">
-                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                 <span class="hide-menu">Notifications</span>
                             </a>
                         </li>
@@ -165,7 +168,7 @@
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href = "/login"
                                 aria-expanded="false">
-                                <i class="fa fa-columns" aria-hidden="true"></i>
+                                <i class="fa fa-power-off" aria-hidden="true"></i>
                                 <span class="hide-menu">Logout</span>
                             </a>
                         </li>
@@ -207,48 +210,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <div class="searchbar">
-                                <input class="search-box" type="text" placeholder="Search..">
-                                <button class="search-button" type="submit"><i class="fa fa-search"></i></button>
-                            </div>
                             <div>
                                 <h3 style="margin-top : 20px; margin-bottom: 30px;">Recommended for you</h3>
                             </div>
                             <div>
-                                <table class="table text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0">#</th>
-                                            <th class="border-top-0">Book</th>
-                                            <th class="border-top-0">Genre</th>
-                                            <th class="border-top-0">Author</th>
-                                            <th class="border-top-0"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Book 1</td>
-                                            <td>Genre 1</td>
-                                            <td>Author 1</td>
-                                            <td><div onclick="todo()" class="purchase-button">Request</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Book 2</td>
-                                            <td>Genre 2</td>
-                                            <td>Author 2</td>
-                                            <td><div onclick="todo()" class="purchase-button">Request</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Book 3</td>
-                                            <td>Genre 1</td>
-                                            <td>Author 3</td>
-                                            <td><div onclick="todo()" class="purchase-button">Request</div></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <!-- Datatables start -->
+                                <table id="recommended" class="display" width="100%"></table>
+                                <!-- Datatables end -->
                             </div>
                         </div>
                     </div>
@@ -302,7 +270,31 @@
     <script src="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
     <script>
-        userData = JSON.parse(localStorage.userData)
+        // Datatables
+        var dataSet = [
+            [ "1", "Book 1", "Genre 1", "Author 1", "<div onclick='todo()' class='purchase-button'>Request</div>"],
+            [ "2", "Book 2", "Genre 2", "Author 2", "<div onclick='todo()' class='purchase-button'>Request</div>"],
+            [ "3", "Book 3", "Genre 3", "Author 3", "<div onclick='todo()' class='purchase-button'>Request</div>"],
+            [ "4", "Book 4", "Genre 4", "Author 4", "<div onclick='todo()' class='purchase-button'>Request</div>"],
+            [ "5", "Book 5", "Genre 5", "Author 5", "<div onclick='todo()' class='purchase-button'>Request</div>"]
+        ]
+        $(document).ready(function() {
+        $.noConflict();
+        $('#recommended').DataTable( {
+                data: dataSet,
+                columns: [
+                    { title: "#" },
+                    { title: "Book" },
+                    { title: "Genre" },
+                    { title: "Author" },
+                    { title: " " }
+                ],
+                fnInitComplete: function (oSettings, json) {
+                    document.getElementById('recommended_filter').childNodes[0].childNodes[1].placeholder = "Search for Genre, Author.."
+                }
+            } );
+        });
+        userData = JSON.parse(localStorage.userData);
         document.getElementById("profile-name").innerHTML = userData.userName;
         todo = () => {
             alert("Work under progress !!")
