@@ -7,6 +7,7 @@
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />  
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
@@ -270,35 +271,84 @@
     <script src="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
     <script>
-        // Datatables
-        var dataSet = [
-            [ "1", "Book 1", "Genre 1", "Author 1", "<div onclick='todo()' class='purchase-button'>Request</div>"],
-            [ "2", "Book 2", "Genre 2", "Author 2", "<div onclick='todo()' class='purchase-button'>Request</div>"],
-            [ "3", "Book 3", "Genre 3", "Author 3", "<div onclick='todo()' class='purchase-button'>Request</div>"],
-            [ "4", "Book 4", "Genre 4", "Author 4", "<div onclick='todo()' class='purchase-button'>Request</div>"],
-            [ "5", "Book 5", "Genre 5", "Author 5", "<div onclick='todo()' class='purchase-button'>Request</div>"]
-        ]
-        $(document).ready(function() {
-        $.noConflict();
-        $('#recommended').DataTable( {
-                data: dataSet,
-                columns: [
-                    { title: "#" },
-                    { title: "Book" },
-                    { title: "Genre" },
-                    { title: "Author" },
-                    { title: " " }
-                ],
-                fnInitComplete: function (oSettings, json) {
-                    document.getElementById('recommended_filter').childNodes[0].childNodes[1].placeholder = "Search for Genre, Author.."
-                }
-            } );
-        });
+        
         userData = JSON.parse(localStorage.userData);
         document.getElementById("profile-name").innerHTML = userData.userName;
         todo = () => {
             alert("Work under progress !!")
         }
+
+        request_book = (name, owner) => {
+            var request = {
+                name: name,
+                owner: owner,
+                requested: userData.emailId
+            }
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/request-book",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response);
+                    swal("Done !", response.message, "success");
+                }else{
+                    if(response.warn)
+                        swal("Failed :(", response.message, "warning");
+                    else    
+                        swal("Failed :(", response.message, "error");
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $.noConflict();
+            var request = {
+                type: "categories",
+                genre: (userData.interests == undefined || userData.interests == "") ? "all" : userData.interests,
+                email: userData.emailId
+            }
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/all-books",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response);
+                    for(i in response.books){
+                        console.log(i)
+                        response.books[i].push("<div onclick=\"request_book('"+response.books[i][1]+"','"+response.books[i][4]+"')\" class='purchase-button' onclick>Request</div>")
+                    }
+                    $('#recommended').DataTable( {
+                    data: response.books,
+                    oLanguage: {
+                                sEmptyTable: "No Books found !!"
+                            },
+                    columns: [
+                        { title: "#" },
+                        { title: "Book" },
+                        { title: "Genre" },
+                        { title: "Author" },
+                        { title: "Owner" },
+                        { title: "Description" },
+                        { title: " " }
+                    ],
+                    fnInitComplete: function (oSettings, json) {
+                        document.getElementById('recommended_filter').childNodes[0].childNodes[1].placeholder = "Search for Genre, Author.."
+                    }
+                } );
+                }else{
+                    console.log(response);
+                }
+            });
+        });
     </script>
 </body>
 

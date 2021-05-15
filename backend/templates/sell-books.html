@@ -224,18 +224,18 @@
                                                 <div class="col-md-12 border-bottom p-0">
                                                     <div class="col-sm-12 border-bottom">
                                                         <select id="genre" class="form-select shadow-none p-0 border-0 form-control-line">
-                                                            <option class="select-options">Adventure</option>
-                                                            <option class="select-options">Classics</option>
-                                                            <option class="select-options">Comics</option>
-                                                            <option class="select-options">Detective</option>
-                                                            <option class="select-options">Fantasy</option>
-                                                            <option class="select-options">Horror</option>
-                                                            <option class="select-options">Romance</option>
-                                                            <option class="select-options">Sci-fi</option>
-                                                            <option class="select-options">Thrillers</option>
-                                                            <option class="select-options">Autobiographies</option>
-                                                            <option class="select-options">History</option>
-                                                            <option class="select-options">Self-help</option>
+                                                            <option class='select-options' value="Adventure">Adventure</option>
+                                                            <option class='select-options'value="Classics">Classics</option>
+                                                            <option class='select-options' value="Comics">Comics</option>
+                                                            <option class='select-options' value="Detective">Detective</option>
+                                                            <option class='select-options' value="Fantasy">Fantasy</option>
+                                                            <option class='select-options' value="Horror">Horror</option>
+                                                            <option class='select-options' value="Romance">Romance</option>
+                                                            <option class='select-options' value="Sci-fi">Sci-fi</option>
+                                                            <option class='select-options' value="Thrillers">Thrillers</option>
+                                                            <option class='select-options' value="Autobiographies">Autobiographies</option>
+                                                            <option class='select-options' value="History">History</option>
+                                                            <option class='select-options' value="Self-help">Self-help</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -340,8 +340,10 @@
                     $("#genre").val("")
                     $("#description").val("")
 				}else{
-                    console.log(response);
-					swal("Failed :(", response.message, "error");
+					if(response.warn)
+						swal("Failed :(", response.message, "warning");
+					else
+						swal("Failed :(", response.message, "error");
                 }
 			});
         }

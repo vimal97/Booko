@@ -10,6 +10,14 @@
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
     <style>
+        .purchase-button{
+            background-color: green;
+            border: 0;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 7px;
+        }
         /* The Modal (background) */
         .modal-booko {
         display: none; /* Hidden by default */
@@ -382,7 +390,7 @@
         $.noConflict();
 
         open_category = (str) => {
-                var request = {
+            var request = {
                 type: "categories",
                 genre: str,
                 email: userData.emailId
@@ -399,14 +407,24 @@
             $.ajax(settings).done(function (response) {
                 if(response.success == true){
                     console.log(response);
+                    for(i in response.books){
+                        console.log(i)
+                        response.books[i].splice(2,1)
+                        response.books[i].push("<div onclick='todo()' class='purchase-button'>Request</div>")
+                    }
                     $('#categories'+str).DataTable( {
                             data: response.books,
                             iDisplayLength: 3,
+                            oLanguage: {
+                                sEmptyTable: "No Books found !!"
+                            },
                             columns: [
                                 { title: "#" },
                                 { title: "Book" },
-                                { title: "Genre" },
-                                { title: "Author" }
+                                { title: "Author" },
+                                { title: "Owner" },
+                                { title: "Description" },
+                                { title: " " }
                             ],
                             fnInitComplete: function (oSettings, json) {
                                 document.getElementById('categories'+str+'_filter').childNodes[0].childNodes[1].placeholder = "Search for Books.."

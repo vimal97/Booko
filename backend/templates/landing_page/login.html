@@ -4,6 +4,7 @@
 	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='landing_page/log.css') }}">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body style="background: url({{ url_for('static', filename='landing_page/l.jpg') }})no-repeat;">
 	<div class="container" id="container">
@@ -58,11 +59,15 @@
 						userData.emailId = response.emailId;
 						userData.country = response.country;
 						userData.interests = response.interests;
+						userData.requested = response.requested;
 						localStorage.userData = JSON.stringify(userData)
 						window.location.href = "/dashboard";
 					}
 				}else
-					alert(response.message)
+				if(response.warn)
+						swal("Failed :(", response.message, "warning");
+					else
+						swal("Failed :(", response.message, "error");
 			});
 		}
 	</script>
