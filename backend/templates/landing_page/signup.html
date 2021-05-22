@@ -57,6 +57,7 @@
 
 			$.ajax(settings).done(function (response) {
 				if(response.success == true){
+					response.password = "";
 					localStorage.userData = response.userData;
 					localStorage.login = true;
 					window.location.href = "/dashboard";

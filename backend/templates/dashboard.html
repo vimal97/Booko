@@ -3,6 +3,7 @@
 
 <head>
     <title>BOOKO</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications-bell.css') }}">
 	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />  
@@ -158,10 +159,10 @@
                         </li>
                         <!-- Notifications -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications" id="notifications-sidebar"
                                 aria-expanded="false">
                                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                                <span class="hide-menu">Notifications</span>
+                                <span class="hide-menu">Notifications </span>
                             </a>
                         </li>
                         <!-- Logout -->
@@ -274,6 +275,28 @@
         
         userData = JSON.parse(localStorage.userData);
         document.getElementById("profile-name").innerHTML = userData.userName;
+        var request = {
+            email: userData.emailId
+        }
+
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://127.0.0.1:5000/get-requests",
+            "method": "POST",
+            "data": JSON.stringify(request)
+        }
+
+        $.ajax(settings).done(function (response) {
+            if(response.success == true){
+                localStorage.notifications = response.requests
+                if(response.requests.length != 0){
+                    localStorage.notifications_show = "true";
+                    $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>");
+                }
+            }else
+                console.log(response)
+        });
         todo = () => {
             alert("Work under progress !!")
         }
@@ -294,6 +317,10 @@
             $.ajax(settings).done(function (response) {
                 if(response.success == true){
                     console.log(response);
+                    temp = JSON.parse(userData.requested)
+                    temp.push([request.name, request.owner])
+                    userData.requested = JSON.stringify(temp)
+                    localStorage.userData = JSON.stringify(userData)
                     swal("Done !", response.message, "success");
                 }else{
                     if(response.warn)
@@ -326,8 +353,14 @@
                         console.log(i)
                         response.books[i].push("<div onclick=\"request_book('"+response.books[i][1]+"','"+response.books[i][4]+"')\" class='purchase-button' onclick>Request</div>")
                     }
+                    filteredBooks = []
+                    for(i in response.books){
+                        if(response.books[i][4] != userData.userName) // filter out his books
+                            filteredBooks.push(response.books[i])
+                    }
+                    console.log("Filtered books : ", filteredBooks)
                     $('#recommended').DataTable( {
-                    data: response.books,
+                    data: filteredBooks,
                     oLanguage: {
                                 sEmptyTable: "No Books found !!"
                             },

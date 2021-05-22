@@ -4,6 +4,7 @@
 <head>
     <title>BOOKO</title>
     <link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications-bell.css') }}">
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
@@ -154,7 +155,7 @@
                         <!-- Notifications -->
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications"
-                                aria-expanded="false">
+                                id="notifications-sidebar" aria-expanded="false">
                                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                 <span class="hide-menu">Notifications</span>
                             </a>
@@ -313,6 +314,10 @@
     <script>
         userData = JSON.parse(localStorage.userData)
         document.getElementById("profile-name").innerHTML = userData.userName;
+
+        //check for notification
+        if(localStorage.notifications_show == "true")
+            $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>")
 
         //Add book
         addBook = () => {

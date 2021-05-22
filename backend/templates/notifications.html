@@ -3,9 +3,40 @@
     
 <head>
     <title>BOOKO</title>
-	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications-bell.css') }}">
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Custom CSS -->
+    <style>
+        .box{
+            /* border: 1px solid rgb(85, 81, 81); */
+            border-radius: 4px;
+            text-align: center;
+            margin-left: 15px;
+            box-shadow: 1px 1px 5px 1px #888888;
+        }
+        .approve-button{
+            display: inline-block;
+            background-color: green;
+            border: 0;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 7px;
+            border-radius: 4px;
+        }
+        .decline-button{
+            margin-left: 10px;
+            display: inline-block;
+            background-color: rgb(190, 3, 3);
+            border: 0;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 7px;
+            border-radius: 4px;
+        }
+    </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -140,7 +171,7 @@
                         <!-- Notifications -->
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/notifications"
-                                aria-expanded="false">
+                            id="notifications-sidebar" aria-expanded="false">
                                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                 <span class="hide-menu">Notifications</span>
                             </a>
@@ -191,7 +222,7 @@
                 <!-- ============================================================== -->
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="white-box">
+                        <div id="notifications" class="white-box row" style="width: 100%;">
                             <h3 class="box-title">No new notifications.</h3>
                         </div>
                     </div>
@@ -239,6 +270,7 @@
     <script src="{{ url_for('static', filename='js/sidebarmenu.js') }}"></script>
     <!--Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!--This page JavaScript -->
     <!--chartis chart-->
     <script src="{{ url_for('static', filename='plugins/bower_components/chartist/dist/chartist.min.js') }}"></script>
@@ -247,6 +279,102 @@
     <script>
         userData = JSON.parse(localStorage.userData)
         document.getElementById("profile-name").innerHTML = userData.userName;
+
+        check_requests = () => {
+                var request = {
+                email: userData.emailId
+            }
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/get-requests",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    requests = JSON.parse(response.requests)
+                    console.log("Received requests : ", requests)
+                    if(requests.length){
+                        for(i in requests){
+                            console.log("Loop ",i," : ",requests[i])
+                            for(j in requests[i][1]){
+                                console.log("Inner Loop ",i," : ",requests[i][1][j])
+                                $("#notifications").append(
+                                    "<div class='box col-md-3'>"+
+                                        "<h4><b>Book : </b>"+ requests[i][0] +"</h4>"+
+                                        "<p><b>User : </b>"+ requests[i][1][j] +"</p>"+
+                                        "<button class='approve-button' onclick=\"approve('"+ requests[i][0] +"','"+ requests[i][1][j] +"')\">Approve</button>"+
+                                        "<button class='decline-button' onclick=\"reject('"+ requests[i][0] +"','"+ requests[i][1][j] +"')\">Decline</button>"+
+                                    "</div>"
+                                )
+                            }
+                        }
+                    }
+                    else{
+                        $("#notifications").html("<h3 class='box-title'>No new notifications.</h3>")
+                    }
+                }else
+                    console.log(response)
+            });
+        }
+
+        check_requests()
+
+        approve = (bookName, requestee) => {
+            var request = {
+                approve: true,
+                name: bookName,
+                requestee: requestee,
+                owner: userData.emailId
+            }
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/respond-requests",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response)
+                    swal("Done !", "Approved request from '"+ requestee +"' for '"+ bookName +"' book", "success");
+                }else
+                    console.log(response)
+            }); 
+            check_requests()
+        }
+
+        reject = (bookName, requestee) => {
+            var request = {
+                approve: false,
+                name: bookName,
+                requestee: requestee,
+                owner: userData.emailId
+            }
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/respond-requests",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response)
+                    swal("Done !", "Rejected request from '"+ requestee +"' for '"+ bookName +"' book", "error");
+                }else
+                    console.log(response)
+                    swal("Failed !", response.message, "error");
+            });
+            check_requests()
+        }
+
+        //check for notification
+        if(localStorage.notifications_show == "true")
+            localStorage.notifications_show == "false";
     </script>
 </body>
 
