@@ -192,6 +192,9 @@ def request_book():
             cur.execute("select * from books")
             newRequests = []
             rows = cur.fetchall()
+            cur.execute("select * from users")
+            users = cur.fetchall()
+            temp = []
             for i in rows:
                 if(i[0] == requestData['name'] and i[5] == get_user("email", requestData['owner'])):
                     print(" --> Modifying the request array.")

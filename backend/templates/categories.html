@@ -8,9 +8,16 @@
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" /> 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
     <style>
+        .box{
+            border-radius: 4px;
+            text-align: center;
+            margin: 25px;
+            box-shadow: 1px 1px 5px 1px #888888;
+        }
         .purchase-button{
             background-color: green;
             border: 0;
@@ -271,53 +278,53 @@
                 <!-- ============================================================== -->
                 <div class="row">
                     <div class="white-box row">
-                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Adventure')">
+                        <div class="box col-md-3" style="text-align: center;" onclick="open_category('Adventure')">
 		                <img src="{{ url_for('static', filename='img/adventure.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">ADVENTURE</p>
+		                <b style="margin-top: 10px;">ADVENTURE</b>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Classics')">
-		                <img src="{{ url_for('static', filename='img/cl.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">CLASSICS </p>
+                        <div class="box col-md-3" style="text-align: center;" onclick="open_category('Classics')">
+		                <img src="{{ url_for('static', filename='img/cl.jpg') }}" class style="width: 25%;" />
+		                <b style="margin-top: 10px;">CLASSICS </b>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Comics')">
+                        <div class="box col-md-3" style="text-align: center;" onclick="open_category('Comics')">
 		                <img src="{{ url_for('static', filename='img/co.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">COMICS</p>
+		                <b style="margin-top: 10px;">COMICS</b>
                         </div>
-                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Detective')">
+                        <div class="box col-md-3" style="text-align: center;" onclick="open_category('Detective')">
 		                <img src="{{ url_for('static', filename='img/de.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">DETECTIVE</p>
+		                <b style="margin-top: 10px;">DETECTIVE</b>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Fantasy')">
+                        <div class="box col-md-3" style="text-align: center;" onclick="open_category('Fantasy')">
 		                <img src="{{ url_for('static', filename='img/fa.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">FANTASY</p>
+		                <b style="margin-top: 10px;">FANTASY</b>
 		                </div>
-		                <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Horror')">
+		                <div class="box col-md-3" style="text-align: center;" onclick="open_category('Horror')">
 		                <img src="{{ url_for('static', filename='img/ho.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">HORROR</p>
+		                <b style="margin-top: 10px;">HORROR</b>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Romance')">
+                        <div class="box col-md-3" style="text-align: center;" onclick="open_category('Romance')">
 		                <img src="{{ url_for('static', filename='img/ro.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">ROMANCE</p>
+		                <b style="margin-top: 10px;">ROMANCE</b>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Sci-fi')">
+                        <div class="box col-md-3" style="text-align: center;" onclick="open_category('Sci-fi')">
 		                <img src="{{ url_for('static', filename='img/sci.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">SCI-FI</p>
+		                <b style="margin-top: 10px;">SCI-FI</b>
 		                </div>
-		                <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Thrillers')">
+		                <div class="box col-md-3" style="text-align: center;" onclick="open_category('Thrillers')">
 		                <img src="{{ url_for('static', filename='img/th.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">THRILLERS</p>
+		                <b style="margin-top: 10px;">THRILLERS</b>
 		                </div>
-                        <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Autobiographies')">
+                        <div class="box col-md-3" style="text-align: center;" onclick="open_category('Autobiographies')">
                         <img src="{{ url_for('static', filename='img/au.jpg') }}" style="width: 25%;" />
-                        <p style="margin-top: 10px;">AUTOBIOGRAPHIES</p>
+                        <b style="margin-top: 10px;">AUTOBIOGRAPHIES</b>
 		                </div>
-		                <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('History')">
+		                <div class="box col-md-3" style="text-align: center;" onclick="open_category('History')">
 		                <img src="{{ url_for('static', filename='img/hi.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">HISTORY</p>
+		                <b style="margin-top: 10px;">HISTORY</b>
 		                </div>
-		                <div class="div1 col-md-3" style="text-align: center;" onclick="open_category('Self-help')">
+		                <div class="box col-md-3" style="text-align: center;" onclick="open_category('Self-help')">
 		                <img src="{{ url_for('static', filename='img/se.jpg') }}" style="width: 25%;" />
-		                <p style="margin-top: 10px;">SELF-HELP</p>
+		                <b style="margin-top: 10px;">SELF-HELP</b>
                         </div>
 
                         <!-- The Modal -->
@@ -390,6 +397,36 @@
         var modal = document.getElementById("myModal");
         $.noConflict();
 
+        request_book = (name, owner) => {
+            var request = {
+                name: name,
+                owner: owner,
+                requested: userData.userName
+            }
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/request-book",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response);
+                    temp = JSON.parse(userData.requested)
+                    temp.push([request.name, request.owner])
+                    userData.requested = JSON.stringify(temp)
+                    localStorage.userData = JSON.stringify(userData)
+                    swal("Done !", response.message, "success");
+                }else{
+                    if(response.warn)
+                        swal("Failed :(", response.message, "warning");
+                    else    
+                        swal("Failed :(", response.message, "error");
+                }
+            });
+        }
+
         open_category = (str) => {
             var request = {
                 type: "categories",
@@ -411,7 +448,7 @@
                     for(i in response.books){
                         console.log(i)
                         response.books[i].splice(2,1) // splice out categories
-                        response.books[i].push("<div onclick='todo()' class='purchase-button'>Request</div>")
+                        response.books[i].push("<div onclick=\"request_book('"+response.books[i][1]+"','"+response.books[i][3]+"')\" class='purchase-button' onclick>Request</div>")
                     }
                     filteredBooks = []
                     for(i in response.books){
