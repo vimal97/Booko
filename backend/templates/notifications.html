@@ -12,28 +12,51 @@
             /* border: 1px solid rgb(85, 81, 81); */
             border-radius: 4px;
             text-align: center;
-            margin-left: 15px;
+            margin: 15px;
             box-shadow: 1px 1px 5px 1px #888888;
         }
-        .approve-button{
-            display: inline-block;
-            background-color: green;
+        .call-button{
+            background-color: rgb(20, 172, 20);
             border: 0;
             color: white;
             font-weight: bold;
             text-align: center;
+            margin-top: 10px;
             padding: 7px;
+            width: 100%;
+            border-radius: 4px;
+        }
+        .mail-button{
+            background-color: rgb(86, 178, 209);
+            border: 0;
+            color: white;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+            padding: 7px;
+            width: 100%;
+            border-radius: 4px;
+        }
+        .approve-button{
+            background-color: rgb(20, 172, 20);
+            border: 0;
+            color: white;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+            padding: 7px;
+            width: 100%;
             border-radius: 4px;
         }
         .decline-button{
-            margin-left: 10px;
-            display: inline-block;
-            background-color: rgb(190, 3, 3);
+            background-color: rgb(172, 38, 20);
             border: 0;
             color: white;
             font-weight: bold;
+            margin-top: 10px;
             text-align: center;
             padding: 7px;
+            width: 100%;
             border-radius: 4px;
         }
     </style>
@@ -222,8 +245,23 @@
                 <!-- ============================================================== -->
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="notifications" class="white-box row" style="width: 100%;">
-                            <h3 class="box-title">No new notifications.</h3>
+                        <div class="white-box row" style="width: 100%;">
+                            <div class="row">
+                                <h3 class="box-title">Requests for your books.</h3>
+                                <div id="requests" class="row">
+                                    <h5>Nothing to show!!.</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="white-box row" style="width: 100%;">
+                            <h3 class="box-title">Status of your requests</h3>
+                            <div id="requested" class="row">
+                                <h5>Nothing to show!!.</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -281,7 +319,54 @@
         document.getElementById("profile-name").innerHTML = userData.userName;
 
         check_requests = () => {
-                var request = {
+            
+            var request = {
+                type: "requests",    
+                email: userData.emailId
+            }
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/get-requests",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+
+            $.ajax(settings).done(function (response) {
+                console.log("Checked Requests",response)
+                if(response.success == true){
+                    requests = JSON.parse(response.requests)
+                    console.log("Received requests : ", requests)
+                    if(requests.length != 0){
+                        $("#requests").html("");
+                        for(i in requests){
+                            for(j in requests[i][1]){
+                                $("#requests").append(
+                                    "<div class='box col-md-3'>"+
+                                    "<h4><b>Book : </b>"+ requests[i][0] +"</h4>"+
+                                    "<p><b>Owner : </b>"+ requests[i][1][j] +"</p>"+
+                                    "<div class='row'>"+
+                                    "<a class='col-md-6'><button class='approve-button' onclick=\"approve('"+ requests[i][0] +"','"+ requests[i][1][j] +"')\">Approve</button></a>"+
+                                    "<a class='col-md-6'><button class='decline-button' onclick=\"reject('"+ requests[i][0] +"','"+ requests[i][1][j] +"')\">Decline</button></a>"+
+                                    "</div>"+
+                                "</div>"
+                                )
+                            }
+                        }
+                    }
+                    else{
+                        $("#requests").html("<h5>Nothing to show!!.</h5>")
+                    }
+                }else
+                    console.log(response)
+            });
+        }
+
+        check_status = () => {
+            
+            var request = {
+                type: "requested",
                 email: userData.emailId
             }
 
@@ -295,26 +380,38 @@
 
             $.ajax(settings).done(function (response) {
                 if(response.success == true){
+                    console.log(response)
                     requests = JSON.parse(response.requests)
-                    console.log("Received requests : ", requests)
-                    if(requests.length){
-                        for(i in requests){
-                            console.log("Loop ",i," : ",requests[i])
-                            for(j in requests[i][1]){
-                                console.log("Inner Loop ",i," : ",requests[i][1][j])
-                                $("#notifications").append(
-                                    "<div class='box col-md-3'>"+
-                                        "<h4><b>Book : </b>"+ requests[i][0] +"</h4>"+
-                                        "<p><b>User : </b>"+ requests[i][1][j] +"</p>"+
-                                        "<button class='approve-button' onclick=\"approve('"+ requests[i][0] +"','"+ requests[i][1][j] +"')\">Approve</button>"+
-                                        "<button class='decline-button' onclick=\"reject('"+ requests[i][0] +"','"+ requests[i][1][j] +"')\">Decline</button>"+
-                                    "</div>"
-                                )
-                            }
+                    console.log("Received request status : ", requests)
+                    requests.approved = JSON.parse(requests.approved);
+                    requests.rejected = JSON.parse(requests.rejected);
+                    if(requests.approved.length != 0 || requests.rejected.length != 0){
+                        $("#requested").html("");
+                        for(i in requests.approved){
+                            $("#requested").append(
+                                "<div class='box col-md-3'>"+
+                                    "<h4><b>Book : </b>"+ requests.approved[i][0] +"</h4>"+
+                                    "<p><b>Owner : </b>"+ requests.approved[i][1] +"</p>"+
+                                    "<h5><b>Status : <span style='color:green'>Approved</span></b></h5>"+
+                                    "<div class='row'>"+
+                                    "<a href='mailto:"+ requests.approved[i][2] +"' class='col-md-6'><button class='call-button'><i class='fa fa-envelope-o' aria-hidden='true'></i> Mail</button></a>"+
+                                    "<a href='tel:"+ requests.approved[i][3] +"' class='col-md-6'><button class='mail-button'><i class='fa fa-phone' aria-hidden='true'></i> Call</button></a>"+
+                                    "</div>"+
+                                "</div>"
+                            )
+                        }
+                        for(i in requests.rejected){
+                            $("#requested").append(
+                                "<div class='box col-md-3'>"+
+                                    "<h4><b>Book : </b>"+ requests.rejected[i][0] +"</h4>"+
+                                    "<p><b>Owner : </b>"+ requests.rejected[i][1] +"</p>"+
+                                    "<h5><b>Status : <span style='color:red'>Rejected</span></b></h5>"+
+                                "</div>"
+                            )
                         }
                     }
                     else{
-                        $("#notifications").html("<h3 class='box-title'>No new notifications.</h3>")
+                        $("#requested").html("<h5>Nothing to show!!.</h5>")
                     }
                 }else
                     console.log(response)
@@ -322,6 +419,7 @@
         }
 
         check_requests()
+        check_status()
 
         approve = (bookName, requestee) => {
             var request = {
@@ -344,7 +442,7 @@
                 }else
                     console.log(response)
             }); 
-            check_requests()
+            setTimeout(check_requests(),3000)
         }
 
         reject = (bookName, requestee) => {
@@ -365,16 +463,13 @@
                 if(response.success == true){
                     console.log(response)
                     swal("Done !", "Rejected request from '"+ requestee +"' for '"+ bookName +"' book", "error");
-                }else
+                }else{
                     console.log(response)
                     swal("Failed !", response.message, "error");
+                }
             });
-            check_requests()
+            setTimeout(check_requests(),3000)
         }
-
-        //check for notification
-        if(localStorage.notifications_show == "true")
-            localStorage.notifications_show == "false";
     </script>
 </body>
 

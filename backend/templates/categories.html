@@ -446,7 +446,7 @@
         } 
 
         //check for notifications
-        if(localStorage.notifications_show == "true")
+        if(JSON.parse(localStorage.notifications).length)
             $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>")
 
         var span = document.getElementsByClassName("close-booko")[0];

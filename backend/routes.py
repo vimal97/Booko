@@ -23,11 +23,11 @@ def signup():
         print("\n# POST REQUEST FOR /signup")
         signupData = json.loads(list(request.form)[0])
         if(get_user("username",signupData['emailId']) != False):
-            return jsonify(success=False,message="You are already registered. Please login.",warn=True)
+            return jsonify(success=False,message="Username is already taken. Please try again with another username.",warn=True)
         try:
             with sql.connect("booko.db") as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO users (username, firstname, lastname, phoneno, emailid, password, country, interests, requested) VALUES (?,?,?,?,?,?,?,?,?)",(signupData['userName'],signupData['firstName'],signupData['lastName'],signupData['phoneNo'],signupData['emailId'],signupData['password'],signupData['country'],signupData['interests'],signupData['requested']))
+                cur.execute("INSERT INTO users (username, firstname, lastname, phoneno, emailid, password, country, interests, requested, approved, rejected) VALUES (?,?,?,?,?,?,?,?,?,?,?)",(signupData['userName'],signupData['firstName'],signupData['lastName'],signupData['phoneNo'],signupData['emailId'],signupData['password'],signupData['country'],signupData['interests'],signupData['requested'],'[]','[]'))
                 con.commit()
                 print(" -> User resistration successful\n")
                 return jsonify(success=True,message="User registered successfully",userData=json.dumps(signupData))
@@ -55,7 +55,7 @@ def login():
                     for i in rows:
                         if(i[4] == loginData['emailId'] and i[5] == loginData['password']):
                             print(" -> User login successful\n")
-                            return jsonify(success=True,message="User login successful",userName=i[0],firstName=i[1],lastName=i[2],phoneNo=i[3],emailId=i[4],country=i[6],interests=i[7],requested=i[8])
+                            return jsonify(success=True,message="User login successful",userName=i[0],firstName=i[1],lastName=i[2],phoneNo=i[3],emailId=i[4],country=i[6],interests=i[7],requested=i[8],approved=i[9],rejected=i[10])
                     print(" -> User not found\n")
                     return jsonify(success=False,message="User not found",warn=False)
         except Exception as e:
@@ -214,20 +214,13 @@ def request_book():
             newRequested = []
             rows = cur.fetchall()
             for i in rows:
-                if(i[4] == requestData['requested']):
+                if(i[4] == get_user("email",requestData['requested'])):
                     newRequested = json.loads(i[8])
+            print("Already present data : {}".format(newRequested))
             newRequested.append([requestData['name'], requestData['owner']])
-            cur.execute("UPDATE users SET requested='{}' WHERE emailid='{}'".format(json.dumps(newRequested),requestData['requested']))
+            print("Updated present data : {}".format(newRequested))
+            cur.execute("UPDATE users SET requested='{}' WHERE emailid='{}'".format(json.dumps(newRequested),get_user("email",requestData['requested'])))
             con.commit()
-            
-            # print new user data
-            print(" --> Updated user data : "),
-            cur.execute("select * from users")
-            rows = cur.fetchall()
-            for i in rows:
-                if(i[4] == requestData['requested']):
-                    print(i)
-            
             return jsonify(success=True, message="Request sent successfully. Check the Notifications tab for updates. :)")
     except Exception as e:
         print(" -> Request addition failed due to {}\n".format(e))
@@ -238,24 +231,59 @@ def request_book():
 def respond_requests():
     print("\n#POST REQUEST FOR /respond-requests\n")
     requestData = json.loads(list(request.form)[0])
+    print("Data received : ",requestData)
     try:
         with sql.connect("booko.db") as con:
             if(requestData['approve'] == True):
                 print(" --> Approval request")
-                print_users()
-                print_books()
-            else:
-                print(" --> Reject request")
+                # Remove requestee from booksData
                 cur = con.cursor()
                 cur.execute("select * from books where owner='{}' AND name='{}'".format(requestData['owner'],requestData['name']))
                 rows = cur.fetchall()
-                for i in rows:
-                    if(i[0] == requestData['name']):
-                        requestorArray = json.loads(i[6])
-                        requestorArray.remove(requestData['requestee'])
+                requestorArray = json.loads(rows[0][6])
+                requestorArray.remove(requestData['requestee'])
                 cur.execute("update books SET requests='{}' where owner='{}' AND name='{}'".format(json.dumps(requestorArray), requestData['owner'], requestData['name']))
-                print_users()
-                print_books()
+                # add book to users approved list
+                cur.execute("select * from users where emailid='{}'".format(get_user("email",requestData['requestee'])))
+                rows = cur.fetchall()
+                requestedArray = json.loads(rows[0][8])
+                approvedArray = json.loads(rows[0][9])
+                indx = 0
+                print(" # DEBUG Requested array : {}".format(requestedArray))
+                for i in requestedArray:
+                    if(i[0] == requestData['name'] and i[1] == requestData['owner']):
+                        indx = requestedArray.index(i)
+                requestedArray.pop(indx)
+                approvedArray.append([requestData['name'], get_user("username", requestData['owner']), requestData['owner'], get_user("phoneno", requestData['owner'])])
+                cur.execute("update users SET requested='{}',approved='{}' where emailid='{}'".format(json.dumps(requestedArray), json.dumps(approvedArray), get_user("email",requestData['requestee'])))
+                # print_users()
+                # print_books()
+            else:
+                print(" --> Reject request")
+                cur = con.cursor()
+                # Remove requestee from booksData
+                cur.execute("select * from books where owner='{}' AND name='{}'".format(requestData['owner'],requestData['name']))
+                rows = cur.fetchall()
+                requestorArray = json.loads(rows[0][6])
+                print(" # DEBUG Book requested array : {}".format(requestorArray))
+                requestorArray.remove(requestData['requestee'])
+                cur.execute("update books SET requests='{}' where owner='{}' AND name='{}'".format(json.dumps(requestorArray), requestData['owner'], requestData['name']))
+                # add book to users reject list
+                cur.execute("select * from users where emailid='{}'".format(get_user("email",requestData['requestee'])))
+                rows = cur.fetchall()
+                requestedArray = json.loads(rows[0][8])
+                rejectedArray = json.loads(rows[0][10])
+                indx = 0
+                print(" # DEBUG Requested array of requestee before rejection: {} and rejected array {}".format(requestedArray, rejectedArray))
+                for i in requestedArray:
+                    if(i[0] == requestData['name'] and i[1] == requestData['owner']):
+                        indx = requestedArray.index(i)
+                requestedArray.pop(indx)
+                print(" # DEBUG Requested array of requestee after rejection: {} and rejected array {}".format(requestedArray, rejectedArray))
+                rejectedArray.append([requestData['name'], get_user("username",requestData['owner'])])
+                cur.execute("update users SET requested='{}',rejected='{}' where emailid='{}'".format(json.dumps(requestedArray), json.dumps(rejectedArray), get_user("email",requestData['requestee'])))
+                # print_users()
+                # print_books()
             return jsonify(success=True)
     except Exception as e:
         print(" -> Fetching request failed due to {}\n".format(e))
@@ -267,19 +295,33 @@ def get_requests():
     print("\n#POST REQUEST FOR /get-requests\n")
     userData = json.loads(list(request.form)[0])
     finalRequest = []
-    try:
-        with sql.connect("booko.db") as con:
-            cur = con.cursor()
-            cur.execute("select * from books where owner='{}'".format(userData['email']))
-            rows = cur.fetchall()
-            for i in rows:
-                if(i[6] != "[]"):
-                    requests = json.loads(i[6])
-                    finalRequest.append([i[0], json.loads(i[6])])
-            return jsonify(success=True,requests=json.dumps(finalRequest))
-    except Exception as e:
-        print(" -> Fetching request failed due to {}\n".format(e))
-        return jsonify(success=False, message="Fetching request failed")
+    if(userData['type'] == "requests"):
+        try:
+            with sql.connect("booko.db") as con:
+                cur = con.cursor()
+                cur.execute("select * from books where owner='{}'".format(userData['email']))
+                rows = cur.fetchall()
+                for i in rows:
+                    if(i[6] != "[]"):
+                        requests = json.loads(i[6])
+                        finalRequest.append([i[0], json.loads(i[6])])
+                return jsonify(success=True,requests=json.dumps(finalRequest))
+        except Exception as e:
+            print(" -> Fetching request array failed due to {}\n".format(e))
+            return jsonify(success=False, message="Fetching request failed")
+    elif(userData['type'] == "requested"):
+        finalRequest = dict()
+        try:
+            with sql.connect("booko.db") as con:
+                cur = con.cursor()
+                cur.execute("select approved,rejected from users where emailid='{}'".format(userData['email']))
+                rows = cur.fetchall()
+                finalRequest['approved'] = rows[0][0]
+                finalRequest['rejected'] = rows[0][1]
+                return jsonify(success=True,requests=json.dumps(finalRequest))
+        except Exception as e:
+            print(" -> Fetching requested array failed due to {}\n".format(e))
+            return jsonify(success=False, message="Fetching request failed")
 
 def find_book(bookData):
     try:
@@ -314,12 +356,19 @@ def get_user(option1, option2):
                     if(i[4] == option2):
                         print(" -> User found\n")
                         return i[0]
+            elif(option1 == "phoneno"):
+                for i in rows:
+                    if(i[4] == option2):
+                        print(" -> User found\n")
+                        return i[3]
             print(" -> User not found\n")
             return False
     except Exception as e:
         print(" -> User search failed due to {}\n".format(e))
         return False
 
+@app.route('/see-users')
+@cross_origin()
 def print_users():
     try:
         print("\n---------- Users Table-------------")
@@ -330,11 +379,13 @@ def print_users():
             for i in rows:
                 print(i)
         print("---------- End of Users Table------\n")
-        return
+        return jsonify(data=rows)
     except Exception as e:
         print(" -> Getting users table failed due to {}\n".format(e))
-        return
-    
+        return 
+
+@app.route('/see-books')
+@cross_origin()  
 def print_books():
     try:
         print("\n---------- Books Table-------------")
@@ -345,7 +396,7 @@ def print_books():
             for i in rows:
                 print(i)
         print("---------- End of Books Table------\n")
-        return
+        return jsonify(data=rows)
     except Exception as e:
         print(" -> Getting books table failed due to {}\n".format(e))
         return

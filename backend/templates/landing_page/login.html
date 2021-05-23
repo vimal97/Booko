@@ -60,6 +60,8 @@
 						userData.country = response.country;
 						userData.interests = response.interests;
 						userData.requested = response.requested;
+						userData.approved = response.approved;
+						userData.rejected = response.rejected;
 						localStorage.userData = JSON.stringify(userData)
 						window.location.href = "/dashboard";
 					}

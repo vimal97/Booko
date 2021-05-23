@@ -273,30 +273,30 @@
     <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
     <script>
         
-        userData = JSON.parse(localStorage.userData);
-        document.getElementById("profile-name").innerHTML = userData.userName;
-        var request = {
-            email: userData.emailId
+        checkNotifications = () => {
+            var request = {
+                email: userData.emailId
+            }
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/get-requests",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    localStorage.notifications = response.requests;
+                    if(JSON.parse(response.requests).length != 0){
+                        localStorage.notifications_show = "true";
+                        $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>");
+                    }
+                }else
+                    console.log(response)
+            });
         }
 
-        var settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "http://127.0.0.1:5000/get-requests",
-            "method": "POST",
-            "data": JSON.stringify(request)
-        }
-
-        $.ajax(settings).done(function (response) {
-            if(response.success == true){
-                localStorage.notifications = response.requests
-                if(response.requests.length != 0){
-                    localStorage.notifications_show = "true";
-                    $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>");
-                }
-            }else
-                console.log(response)
-        });
         todo = () => {
             alert("Work under progress !!")
         }
@@ -305,7 +305,7 @@
             var request = {
                 name: name,
                 owner: owner,
-                requested: userData.emailId
+                requested: userData.userName
             }
             var settings = {
                 "async": true,
@@ -331,6 +331,11 @@
             });
         }
 
+
+        userData = JSON.parse(localStorage.userData);
+        document.getElementById("profile-name").innerHTML = userData.userName;
+        checkNotifications();
+        
         $(document).ready(function() {
             $.noConflict();
             var request = {
@@ -348,7 +353,7 @@
 
             $.ajax(settings).done(function (response) {
                 if(response.success == true){
-                    console.log(response);
+                    console.log("Book received : ",response);
                     for(i in response.books){
                         console.log(i)
                         response.books[i].push("<div onclick=\"request_book('"+response.books[i][1]+"','"+response.books[i][4]+"')\" class='purchase-button' onclick>Request</div>")
