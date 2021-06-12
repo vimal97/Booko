@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications-bell.css') }}">
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Custom CSS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -334,9 +335,71 @@
         userData = JSON.parse(localStorage.userData)
         document.getElementById("profile-name").innerHTML = userData.userName;
 
-       //check for notifications
-       if(localStorage.notifications && JSON.parse(localStorage.notifications).length)
-            $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>")
+        checkNotifications = () => {
+
+            var notifications_show = false;
+            var request = {
+                type: "requests",
+                email: userData.emailId
+            }
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/get-requests",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    if(JSON.parse(response.requests).length != 0){
+                        console.log(response.requests)
+                        notifications_show = true
+                    }
+                    else{
+                        notifications_show = false
+                    }
+                            
+                    var request = {
+                        type: "requested",
+                        email: userData.emailId
+                    }
+
+                    var settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "http://127.0.0.1:5000/get-requests",
+                        "method": "POST",
+                        "data": JSON.stringify(request)
+                    }
+                    $.ajax(settings).done(function (response) {
+                        if(response.success == true){
+                            requests = JSON.parse(JSON.stringify(response.requests))
+                            requests = JSON.parse(requests)
+                            requests.approved = JSON.parse(requests.approved)
+                            requests.rejected = JSON.parse(requests.rejected)
+                            if(requests.approved.length != 0 || requests.rejected.length != 0 ){
+                                notifications_show = true
+                            }
+                            else{
+                                notifications_show == false
+                            }
+                        }else{
+                            console.log(response)
+                        }
+                        if(notifications_show){
+                            console.log("New notifications")
+                            $("#notifications-sidebar").append("<i class='fa fa-bell' style='color: red;float: right;margin-left: 30%;'></i>")
+                        }
+                        else 
+                            console.log("No new notifications")
+                    });
+                }else
+                    console.log(response)
+            });
+        }
+        checkNotifications()
+
     </script>
     <script src="{{ url_for('static', filename='plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <!-- Bootstrap tether Core JavaScript -->

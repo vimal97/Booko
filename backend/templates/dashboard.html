@@ -272,11 +272,13 @@
     <script src="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
     <script>
+
+        userData = JSON.parse(localStorage.userData);
+        document.getElementById("profile-name").innerHTML = userData.userName;
         
         checkNotifications = () => {
 
-            localStorage.notifications = JSON.stringify("{requests:[],requested:[]}")
-            notifications = {}
+            var notifications_show = false;
             var request = {
                 type: "requests",
                 email: userData.emailId
@@ -291,39 +293,53 @@
             }
             $.ajax(settings).done(function (response) {
                 if(response.success == true){
-                    notifications.requests = response.requests;
                     if(JSON.parse(response.requests).length != 0){
-                        localStorage.notifications_show = "true";
-                        $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>");
+                        console.log(response.requests)
+                        notifications_show = true
                     }
+                    else{
+                        notifications_show = false
+                    }
+                            
+                    var request = {
+                        type: "requested",
+                        email: userData.emailId
+                    }
+
+                    var settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "http://127.0.0.1:5000/get-requests",
+                        "method": "POST",
+                        "data": JSON.stringify(request)
+                    }
+                    $.ajax(settings).done(function (response) {
+                        if(response.success == true){
+                            requests = JSON.parse(JSON.stringify(response.requests))
+                            requests = JSON.parse(requests)
+                            requests.approved = JSON.parse(requests.approved)
+                            requests.rejected = JSON.parse(requests.rejected)
+                            if(requests.approved.length != 0 || requests.rejected.length != 0 ){
+                                notifications_show = true
+                            }
+                            else{
+                                notifications_show == false
+                            }
+                        }else{
+                            console.log(response)
+                        }
+                        if(notifications_show){
+                            console.log("New notifications")
+                            $("#notifications-sidebar").append("<i class='fa fa-bell' style='color: red;float: right;margin-left: 30%;'></i>")
+                        }
+                        else 
+                            console.log("No new notifications")
+                    });
                 }else
                     console.log(response)
             });
-
-            var request = {
-                type: "requested",
-                email: userData.emailId
-            }
-
-            var settings = {
-                "async": true,
-                "crossDomain": true,
-                "url": "http://127.0.0.1:5000/get-requests",
-                "method": "POST",
-                "data": JSON.stringify(request)
-            }
-            $.ajax(settings).done(function (response) {
-                if(response.success == true){
-                    notifications.requested = response.requests;
-                    if(JSON.parse(response.requests).length != 0){
-                        localStorage.notifications_show = "true";
-                        $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>");
-                    }
-                }else
-                    console.log(response)
-            });
-            localStorage.notifications = JSON.stringify(notifications);
         }
+        checkNotifications()
 
         todo = () => {
             alert("Work under progress !!")
@@ -359,11 +375,6 @@
             });
         }
 
-
-        userData = JSON.parse(localStorage.userData);
-        document.getElementById("profile-name").innerHTML = userData.userName;
-        checkNotifications();
-        
         $(document).ready(function() {
             $.noConflict();
             var request = {
