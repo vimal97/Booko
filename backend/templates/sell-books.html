@@ -23,6 +23,41 @@
             padding: 7px;
         }
     </style>
+    <script>
+        //Add book
+        addBook = () => {
+            var bookData = {
+                name: $("#bookname").val(),
+                author: $("#author").val(),
+                genre: $("#genre").val(),
+                description: $("#description").val(),
+                owner: JSON.parse(localStorage.userData).emailId
+            }
+            var settings = {
+				"async": true,
+				"crossDomain": true,
+				"url": "http://127.0.0.1:5000/sell-books",
+				"method": "POST",
+				"data": JSON.stringify(bookData)
+			}
+
+			$.ajax(settings).done(function (response) {
+				if(response.success == true){
+					console.log(response);
+                    swal("Done !", response.message, "success");
+                    $("#bookname").val("");
+                    $("#author").val("")
+                    $("#genre").val("")
+                    $("#description").val("")
+				}else{
+					if(response.warn)
+						swal("Failed :(", response.message, "warning");
+					else
+						swal("Failed :(", response.message, "error");
+                }
+			});
+        }
+    </script>
 </head>
 
 <body>
@@ -295,6 +330,14 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
+    <script>
+        userData = JSON.parse(localStorage.userData)
+        document.getElementById("profile-name").innerHTML = userData.userName;
+
+       //check for notifications
+       if(localStorage.notifications && JSON.parse(localStorage.notifications).length)
+            $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>")
+    </script>
     <script src="{{ url_for('static', filename='plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{ url_for('static', filename='bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
@@ -311,48 +354,6 @@
     <script src="{{ url_for('static', filename='plugins/bower_components/chartist/dist/chartist.min.js') }}"></script>
     <script src="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
-    <script>
-        userData = JSON.parse(localStorage.userData)
-        document.getElementById("profile-name").innerHTML = userData.userName;
-
-       //check for notifications
-       if(JSON.parse(localStorage.notifications).length)
-            $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>")
-
-        //Add book
-        addBook = () => {
-            var bookData = {
-                name: $("#bookname").val(),
-                author: $("#author").val(),
-                genre: $("#genre").val(),
-                description: $("#description").val(),
-                owner: JSON.parse(localStorage.userData).emailId
-            }
-            var settings = {
-				"async": true,
-				"crossDomain": true,
-				"url": "http://127.0.0.1:5000/sell-books",
-				"method": "POST",
-				"data": JSON.stringify(bookData)
-			}
-
-			$.ajax(settings).done(function (response) {
-				if(response.success == true){
-					console.log(response);
-                    swal("Done !", response.message, "success");
-                    $("#bookname").val("");
-                    $("#author").val("")
-                    $("#genre").val("")
-                    $("#description").val("")
-				}else{
-					if(response.warn)
-						swal("Failed :(", response.message, "warning");
-					else
-						swal("Failed :(", response.message, "error");
-                }
-			});
-        }
-    </script>
 </body>
 
 </html>

@@ -274,7 +274,11 @@
     <script>
         
         checkNotifications = () => {
+
+            localStorage.notifications = JSON.stringify("{requests:[],requested:[]}")
+            notifications = {}
             var request = {
+                type: "requests",
                 email: userData.emailId
             }
 
@@ -287,7 +291,7 @@
             }
             $.ajax(settings).done(function (response) {
                 if(response.success == true){
-                    localStorage.notifications = response.requests;
+                    notifications.requests = response.requests;
                     if(JSON.parse(response.requests).length != 0){
                         localStorage.notifications_show = "true";
                         $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>");
@@ -295,6 +299,30 @@
                 }else
                     console.log(response)
             });
+
+            var request = {
+                type: "requested",
+                email: userData.emailId
+            }
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/get-requests",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    notifications.requested = response.requests;
+                    if(JSON.parse(response.requests).length != 0){
+                        localStorage.notifications_show = "true";
+                        $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>");
+                    }
+                }else
+                    console.log(response)
+            });
+            localStorage.notifications = JSON.stringify(notifications);
         }
 
         todo = () => {

@@ -390,6 +390,7 @@
                         for(i in requests.approved){
                             $("#requested").append(
                                 "<div class='box col-md-3'>"+
+                                    "<i onclick=\"removeRequest(\'"+ requests.approved[i][0] +"','"+ requests.approved[i][1] +"')\" style='float: right;' class='fa fa-close'></i>"+
                                     "<h4><b>Book : </b>"+ requests.approved[i][0] +"</h4>"+
                                     "<p><b>Owner : </b>"+ requests.approved[i][1] +"</p>"+
                                     "<h5><b>Status : <span style='color:green'>Approved</span></b></h5>"+
@@ -403,6 +404,7 @@
                         for(i in requests.rejected){
                             $("#requested").append(
                                 "<div class='box col-md-3'>"+
+                                    "<i onclick=\"removeRequest(\'"+ requests.rejected[i][0] +"','"+ requests.rejected[i][1] +"')\" style='float: right;' class='fa fa-close'></i>"+
                                     "<h4><b>Book : </b>"+ requests.rejected[i][0] +"</h4>"+
                                     "<p><b>Owner : </b>"+ requests.rejected[i][1] +"</p>"+
                                     "<h5><b>Status : <span style='color:red'>Rejected</span></b></h5>"+
@@ -420,6 +422,33 @@
 
         check_requests()
         check_status()
+
+        removeRequest = (bookName, owner) => {
+            console.log("Removing Book : ", bookName, "Owner : ", owner)
+            
+            var request = {
+                name: bookName,
+                owner: owner,
+                email: userData.emailId
+            }
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/remove-requests",
+                "method": "POST",
+                "data": JSON.stringify(request)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response)
+                    swal("Done !!", response.message, "success");
+                }else{
+                    console.log(response)
+                    swal("Failed :(", response.message, "error");
+                }
+                check_status()
+            }); 
+        }
 
         approve = (bookName, requestee) => {
             var request = {

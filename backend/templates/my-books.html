@@ -264,7 +264,7 @@
         document.getElementById("profile-name").innerHTML = userData.userName;
 
         //check for notifications
-        if(JSON.parse(localStorage.notifications).length)
+        if(localStorage.notifications && JSON.parse(localStorage.notifications).length)
             $("#notifications-sidebar").append("<span id='noti-bell' style='color: red;margin-left: 30%' class='fa fa-bell'></span>")
 
         var request = {

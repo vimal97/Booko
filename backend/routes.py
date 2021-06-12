@@ -4,6 +4,7 @@ from flask import Flask, redirect, url_for, render_template, request, flash, jso
 import json
 from backend import app
 import sqlite3 as sql
+import ast
 from flask_cors import CORS, cross_origin
 
 
@@ -325,6 +326,49 @@ def get_requests():
         except Exception as e:
             print(" -> Fetching requested array failed due to {}\n".format(e))
             return jsonify(success=False, message="Fetching request failed")
+
+@app.route('/remove-requests', methods=["POST"])
+@cross_origin()
+def remove_requests():
+    indx = -1
+    try:
+        print("\n#REQUEST FOR /remove-requests\n")
+        removeRequest = json.loads(list(request.form)[0])
+        if(find_book(dict(name=removeRequest["name"], owner=get_user("email", removeRequest["owner"])))):
+            print(" -> Book Found")
+            with sql.connect("booko.db") as con:
+                cur = con.cursor()
+                cur.execute("select * from users where emailid='{}'".format(removeRequest['email']))
+                rows = cur.fetchall()
+                requests = ast.literal_eval(rows[0][8]) 
+                if(len(requests)):
+                    for i in requests:
+                        if(i[0] == removeRequest["name"]):
+                            indx = requests.index(i)
+                    if(indx != -1):
+                        requests.pop(indx)
+                indx = -1
+                approved = ast.literal_eval(rows[0][9])
+                if(len(approved)):
+                    for i in approved:
+                        if(i[0] == removeRequest["name"]):
+                            indx = approved.index(i)
+                    if(indx != -1):
+                        approved.pop(indx)
+                indx = -1
+                rejected = ast.literal_eval(rows[0][10])
+                if(len(rejected)):
+                    for i in rejected:
+                        if(i[0] == removeRequest["name"]):
+                            indx = rejected.index(i)
+                    if(indx != -1):
+                        rejected.pop(indx)
+                cur.execute("update users set requested='{}',approved='{}',rejected='{}' where emailid='{}'".format( json.dumps(requests), json.dumps(approved), json.dumps(rejected), removeRequest['email']))
+                return jsonify(success=True, message="Requests successfully removed.")
+    except Exception as e:
+        print(" -> Requests removal failed due to {}\n".format(e))
+        return jsonify(success=False, message="Requests removal failed.")
+
 
 def find_book(bookData):
     try:
