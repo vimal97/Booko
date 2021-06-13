@@ -5,8 +5,10 @@
     <title>BOOKO</title>
 	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='plugins/images/favicon.png') }}">
     <!-- Custom CSS -->
@@ -14,6 +16,14 @@
     <style>
         .block-button{
             background-color: green;
+            color: white;
+            font-weight: bold;
+            border: 0;
+            width: 150px;
+            height: 40px;
+        }
+        .unblock-button{
+            background-color: rgb(126, 117, 117);
             color: white;
             font-weight: bold;
             border: 0;
@@ -88,7 +98,7 @@
                         <!-- ============================================================== -->
                         <li>
                             <a class="profile-pic" href="#">
-                                <img src="{{ url_for('static', filename='plugins/images/users/varun.jpg') }}" alt="user-img" width="36"
+                                <img src="{{ url_for('static', filename='plugins/images/users/avatar.jpg') }}" alt="user-img" width="36"
                                     class="img-circle"><span id="profile-name" class="text-white font-medium">Admin</span></a>
                         </li>
                         <!-- ============================================================== -->
@@ -166,7 +176,7 @@
                     <div class="col-md-12">
                         <div class="white-box">
                             <div class="table-responsive">
-                                <table id="users" class="table text-nowrap">
+                                <table id="users" width="100%">
                                     
                                 </table>
                             </div>
@@ -201,20 +211,78 @@
     </div>
 
     <script>
-        var settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "http://127.0.0.1:5000/admin",
-            "method": "POST",
-            "data": {}
-        }
-        $.ajax(settings).done(function (response) {
-            if(response.success == true){
-                console.log(response)
-            }else{
-                console.log(response);
+        block = (block, username) => {
+            var requests = {
+                username: username,
+                block: block
             }
-        });
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/block-user",
+                "method": "POST",
+                "data": JSON.stringify(requests)
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response)
+                    swal("Done !", response.message, "success");
+                    fetchUsers(false)
+                }
+                else{
+                    console.log(response)
+                    swal("Failed :(", response.message, "error");
+                }
+            });
+        }
+
+        var table;
+
+        fetchUsers = (flag) => {
+            console.log("fetUsers called..")
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://127.0.0.1:5000/admin",
+                "method": "POST",
+                "data": {}
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.success == true){
+                    console.log(response)
+                    if(flag){
+                        $.noConflict();
+                    }
+                    else{
+                        table.destroy()
+                    }
+                    for(i in response.user){
+                        response.user[i][2] = response.user[i][2] == "" ? "Not available" : response.user[i][2]
+                        response.user[i][4] = response.user[i][4] == "false" ? "<button onclick=\"block('true','"+response.user[i][1]+"')\" class='block-button'>Block</button>" : "<button onclick=\"block('false','"+response.user[i][1]+"')\" class='unblock-button'>Unblock</button>"
+                    } 
+                    table = $('#users').DataTable( {
+                        destroy: true,
+                        data: response.user,
+                        oLanguage: {
+                                    sEmptyTable: "No users found !!"
+                                },
+                        columns: [
+                            { title: "#" },
+                            { title: "Username" },
+                            { title: "Phone Number" },
+                            { title: "Email" },
+                            { title: "Status" }
+                        ],
+                        fnInitComplete: function (oSettings, json) {
+                            document.getElementById('users_filter').childNodes[0].childNodes[1].placeholder = "Search for user email, phone number.."
+                        }
+                    } );
+                }else{
+                    console.log(response);
+                }
+            });
+        }
+        fetchUsers(true)
     </script>
 
     <!-- ============================================================== -->

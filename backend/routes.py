@@ -59,7 +59,7 @@ def login():
                             if(i[11] == 'false'):
                                 return jsonify(success=True,message="User login successful",userName=i[0],firstName=i[1],lastName=i[2],phoneNo=i[3],emailId=i[4],country=i[6],interests=i[7],requested=i[8],approved=i[9],rejected=i[10])
                             else:
-                                return jsonify(success=False,message="Your access has been revoked by BOOKO admin !! .Contact at admin@booko.com for more info", warn=False) 
+                                return jsonify(success=False,message="Your access has been revoked by BOOKO admin !! .Contact Admin@booko.com for more info.", warn=False) 
                     print(" -> User not found\n")
                     return jsonify(success=False,message="User not found",warn=False)
         except Exception as e:
@@ -201,8 +201,10 @@ def admin():
             cur = con.cursor()
             cur.execute("select * from users")
             rows = cur.fetchall()
+            count = 0
             for i in rows:
-                finalData.append([ i[0], i[3], i[4], i[11]])
+                count = count + 1
+                finalData.append([ count, i[0], i[3], i[4], i[11]])
         return jsonify(success=True, user=finalData)
 
 
@@ -350,6 +352,19 @@ def get_requests():
         except Exception as e:
             print(" -> Fetching requested array failed due to {}\n".format(e))
             return jsonify(success=False, message="Fetching request failed")
+
+@app.route('/block-user', methods=['POST'])
+@cross_origin()
+def block_user():
+    try:
+        blockRequest = json.loads(list(request.form)[0])
+        with sql.connect("booko.db") as con:
+            cur = con.cursor()
+            cur.execute("update users set blocked='{}' where username='{}'".format(blockRequest['block'], blockRequest['username']))
+            return jsonify(success=True, message="Successfully {} the user.".format("blocked" if(blockRequest['block'] == 'true') else "unblocked"))
+    except Exception as e:
+        print(" -> Blocking user failed due to {}\n".format(e))
+        return jsonify(success=False, message="Failed to block the user.")
 
 @app.route('/remove-requests', methods=["POST"])
 @cross_origin()
