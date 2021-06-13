@@ -28,7 +28,7 @@ def signup():
         try:
             with sql.connect("booko.db") as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO users (username, firstname, lastname, phoneno, emailid, password, country, interests, requested, approved, rejected) VALUES (?,?,?,?,?,?,?,?,?,?,?)",(signupData['userName'],signupData['firstName'],signupData['lastName'],signupData['phoneNo'],signupData['emailId'],signupData['password'],signupData['country'],signupData['interests'],signupData['requested'],'[]','[]'))
+                cur.execute("INSERT INTO users (username, firstname, lastname, phoneno, emailid, password, country, interests, requested, approved, rejected, blocked) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",(signupData['userName'],signupData['firstName'],signupData['lastName'],signupData['phoneNo'],signupData['emailId'],signupData['password'],signupData['country'],signupData['interests'],signupData['requested'],'[]','[]', 'false'))
                 con.commit()
                 print(" -> User resistration successful\n")
                 return jsonify(success=True,message="User registered successfully",userData=json.dumps(signupData))
@@ -56,7 +56,10 @@ def login():
                     for i in rows:
                         if(i[4] == loginData['emailId'] and i[5] == loginData['password']):
                             print(" -> User login successful\n")
-                            return jsonify(success=True,message="User login successful",userName=i[0],firstName=i[1],lastName=i[2],phoneNo=i[3],emailId=i[4],country=i[6],interests=i[7],requested=i[8],approved=i[9],rejected=i[10])
+                            if(i[11] == 'false'):
+                                return jsonify(success=True,message="User login successful",userName=i[0],firstName=i[1],lastName=i[2],phoneNo=i[3],emailId=i[4],country=i[6],interests=i[7],requested=i[8],approved=i[9],rejected=i[10])
+                            else:
+                                return jsonify(success=False,message="Your access has been revoked by BOOKO admin !! .Contact at admin@booko.com for more info", warn=False) 
                     print(" -> User not found\n")
                     return jsonify(success=False,message="User not found",warn=False)
         except Exception as e:
@@ -172,8 +175,17 @@ def get_all_books():
                 username = get_user("username", i[5])
                 booksList.append([count, i[0], i[2], i[1], username, i[3]])
             return jsonify(success=True,books=booksList)
-    elif(req['type'] == "requested"):
-        return "Success"
+    elif(req['type'] == "approved"):
+        with sql.connect("booko.db") as con:
+            cur = con.cursor()
+            cur.execute("select * from users where emailid='{}'".format(req['email']))
+            rows = cur.fetchall()
+        approved = ast.literal_eval(rows[0][9])
+        count = 0
+        for i in approved:
+            count = count + 1
+            booksList.append([count, i[0], i[1], i[2], "Not available" if(i[3] == "") else i[3]])
+        return jsonify(success=True,books=booksList)
     return jsonify(success=False,message="Failed to fetch book of type {}".format(req['type']))
 
 @app.route('/admin')
@@ -363,7 +375,19 @@ def remove_requests():
                             indx = rejected.index(i)
                     if(indx != -1):
                         rejected.pop(indx)
+                # remove entry from books table -- LOGICALLY NO NEED
+                # cur.execute("select * from books where name='{}' and owner='{}'".format(removeRequest['name'], removeRequest['owner']))
+                # rows = cur.fetchall()
+                # indx = -1
+                # requests = ast.literal_eval(rows[0][6]) 
+                # if(len(requests)):
+                #     for i in requests:
+                #         if(i[0] == get_user('username', removeRequest['email'])):
+                #             indx = requests.index(i)
+                #     if(indx != -1):
+                #             requests.pop(indx)
                 cur.execute("update users set requested='{}',approved='{}',rejected='{}' where emailid='{}'".format( json.dumps(requests), json.dumps(approved), json.dumps(rejected), removeRequest['email']))
+                # cur.execute("update books set requests='{}' where name='{}' and owner='{}'".format(json.dumps(requests), removeRequest['name'], removeRequest['owner']))
                 return jsonify(success=True, message="Requests successfully removed.")
     except Exception as e:
         print(" -> Requests removal failed due to {}\n".format(e))

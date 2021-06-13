@@ -6,6 +6,7 @@
     <link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications-bell.css') }}">
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Custom CSS -->
     <style>
         .box{
@@ -345,7 +346,7 @@
                                 $("#requests").append(
                                     "<div class='box col-md-3'>"+
                                     "<h4><b>Book : </b>"+ requests[i][0] +"</h4>"+
-                                    "<p><b>Owner : </b>"+ requests[i][1][j] +"</p>"+
+                                    "<p><b>by : </b>"+ requests[i][1][j] +"</p>"+
                                     "<div class='row'>"+
                                     "<a class='col-md-6'><button class='approve-button' onclick=\"approve('"+ requests[i][0] +"','"+ requests[i][1][j] +"')\">Approve</button></a>"+
                                     "<a class='col-md-6'><button class='decline-button' onclick=\"reject('"+ requests[i][0] +"','"+ requests[i][1][j] +"')\">Decline</button></a>"+
@@ -388,6 +389,7 @@
                     if(requests.approved.length != 0 || requests.rejected.length != 0){
                         $("#requested").html("");
                         for(i in requests.approved){
+                            phone = requests.approved[i][3] != "" ? "<a href='tel:"+ requests.approved[i][3] +"' class='col-md-6'><button class='mail-button'><i class='fa fa-phone' aria-hidden='true'></i> Call</button></a>" : "<a onclick='swal(\"Sorry :(\", \"The\ owner\ of\ the\ book\ hasnt\ added\ his\ contact\ number.\", \"warning\")' class='col-md-6'><button class='mail-button'><i class='fa fa-phone' aria-hidden='true'></i> Call</button></a>"
                             $("#requested").append(
                                 "<div class='box col-md-3'>"+
                                     "<i onclick=\"removeRequest(\'"+ requests.approved[i][0] +"','"+ requests.approved[i][1] +"')\" style='float: right;' class='fa fa-close'></i>"+
@@ -396,7 +398,7 @@
                                     "<h5><b>Status : <span style='color:green'>Approved</span></b></h5>"+
                                     "<div class='row'>"+
                                     "<a href='mailto:"+ requests.approved[i][2] +"' class='col-md-6'><button class='call-button'><i class='fa fa-envelope-o' aria-hidden='true'></i> Mail</button></a>"+
-                                    "<a href='tel:"+ requests.approved[i][3] +"' class='col-md-6'><button class='mail-button'><i class='fa fa-phone' aria-hidden='true'></i> Call</button></a>"+
+                                    phone +
                                     "</div>"+
                                 "</div>"
                             )

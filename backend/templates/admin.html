@@ -5,6 +5,8 @@
     <title>BOOKO</title>
 	<link rel="icon" type="image/png" href="{{ url_for('static',filename='img/logo.png') }}"/>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='plugins/images/favicon.png') }}">
     <!-- Custom CSS -->
@@ -145,7 +147,7 @@
             <div class="page-breadcrumb bg-white">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Notifications</h4>
+                        <h4 class="page-title">Registered Users</h4>
                     </div>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -164,60 +166,8 @@
                     <div class="col-md-12">
                         <div class="white-box">
                             <div class="table-responsive">
-                                <table class="table text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0">#</th>
-                                            <th class="border-top-0">First Name</th>
-                                            <th class="border-top-0">Last Name</th>
-                                            <th class="border-top-0">Username</th>
-                                            <th class="border-top-0">Role</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Deshmukh</td>
-                                            <td>Prohaska</td>
-                                            <td>@Genelia</td>
-                                            <td><button class="block-button">Block</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Deshmukh</td>
-                                            <td>Gaylord</td>
-                                            <td>@Ritesh</td>
-                                            <td><button class="block-button">Block</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Sanghani</td>
-                                            <td>Gusikowski</td>
-                                            <td>@Govinda</td>
-                                            <td><button class="block-button">Block</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Roshan</td>
-                                            <td>Rogahn</td>
-                                            <td>@Hritik</td>
-                                            <td><button class="block-button">Block</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>Joshi</td>
-                                            <td>Hickle</td>
-                                            <td>@Maruti</td>
-                                            <td><button class="block-button">Block</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>6</td>
-                                            <td>Nigam</td>
-                                            <td>Eichmann</td>
-                                            <td>@Sonu</td>
-                                            <td><button class="block-button">Block</button></td>
-                                        </tr>
-                                    </tbody>
+                                <table id="users" class="table text-nowrap">
+                                    
                                 </table>
                             </div>
                         </div>
@@ -249,6 +199,15 @@
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->
     </div>
+
+    <script>
+        $.get('/see-users',  
+            function (data, textStatus, jqXHR) {  
+                console.log(data);
+            }
+        );
+    </script>
+
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
