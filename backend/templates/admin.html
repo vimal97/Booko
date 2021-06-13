@@ -201,11 +201,20 @@
     </div>
 
     <script>
-        $.get('/see-users',  
-            function (data, textStatus, jqXHR) {  
-                console.log(data);
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://127.0.0.1:5000/admin",
+            "method": "POST",
+            "data": {}
+        }
+        $.ajax(settings).done(function (response) {
+            if(response.success == true){
+                console.log(response)
+            }else{
+                console.log(response);
             }
-        );
+        });
     </script>
 
     <!-- ============================================================== -->

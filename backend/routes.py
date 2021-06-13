@@ -188,11 +188,23 @@ def get_all_books():
         return jsonify(success=True,books=booksList)
     return jsonify(success=False,message="Failed to fetch book of type {}".format(req['type']))
 
-@app.route('/admin')
+@app.route('/admin', methods=['GET', 'POST'])
 @cross_origin()
 def admin():
-    print("\n#REQUEST FOR /admin\n")
-    return render_template("admin.html")
+    if(request.method == 'GET'):
+        print("\n#GET REQUEST FOR /admin\n")
+        return render_template("admin.html")
+    else:
+        print("\n#POST REQUEST FOR /admin\n")
+        finalData = []
+        with sql.connect("booko.db") as con:
+            cur = con.cursor()
+            cur.execute("select * from users")
+            rows = cur.fetchall()
+            for i in rows:
+                finalData.append([ i[0], i[3], i[4], i[11]])
+        return jsonify(success=True, user=finalData)
+
 
 @app.route('/request-book', methods = ['POST'])
 @cross_origin()
